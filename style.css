@@ -30,7 +30,11 @@ html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);co
 
 .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
 
-.circles{position:fixed;inset:0;pointer-events:none;z-index:1}
+.circles{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* Ensure main content sits above the animated background */
+.hero-content{position:relative;z-index:6}
+.chapters{position:relative;z-index:6}
 
 .circle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 12px 22px rgba(0,0,0,0.18);will-change:transform, left, top}
 
@@ -87,29 +91,6 @@ html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);co
 .scroll-down:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 22px 40px rgba(0,0,0,0.36)}
 
 .next-section{padding:6rem 1.25rem;text-align:center;background:linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(250,250,250,1) 100%)}
-
-/* Chapters list styles (second section) */
-.chapters{max-width:980px;margin:4rem auto;padding:2rem 1rem 6rem 1rem;display:flex;flex-direction:column;gap:2.75rem;align-items:flex-start}
-.chapter-row{display:flex;align-items:center;gap:2.25rem}
-.num-circle{width:72px;height:72px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--color-white);font-family:var(--font-title);font-size:36px;box-shadow:0 10px 18px rgba(0,0,0,0.12)}
-.num-red{background:var(--color-red)}
-.num-blue{background:var(--color-blue)}
-.num-green{background:var(--color-green)}
-.num-yellow{background:var(--color-yellow)}
-.chapter-text{font-family:var(--font-title);font-weight:300;font-size:28px;color:var(--color-black)}
-
-/* make sure scrolling positions the section nicely under the hero */
-#next{scroll-margin-top:100px}
-
-@media (max-width:900px){
-  .chapters{padding:1.5rem 1rem}
-  .num-circle{width:64px;height:64px;font-size:30px}
-  .chapter-text{font-size:20px}
-}
-
-/* Styles pour les chapitres et chiffres de chapitres */
-.chapitre{font-family:var(--font-title);font-weight:300;font-size:var(--size-chapitre-index);color:var(--color-black)}
-.chiffre-chapitre{font-family:var(--font-title);font-weight:300;font-size:var(--size-chiffre-chapitre-index);color:var(--color-black)}
 
 /* responsive tweaks */
 @media (max-width:1200px){.hero-content{padding:4.5rem 1rem}.title{font-size:70px}.subtitle{font-size:48px}}
