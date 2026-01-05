@@ -1,36 +1,88 @@
 // style.js - adds gentle floating animation to decorative circles and scroll behavior
+// style.js - stronger floating, more/larger circles, and a safe text zone
+// style.js - non-overlapping vertical hover and tightened safe zone
+// style.js - layout based on the provided maquette (1920x1080)
 (function(){
-  const circles = document.querySelectorAll('.circle');
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.circles');
+    const heroContent = document.querySelector('.hero-content');
 
-  // apply random offset animation to each circle to mimic floating dots
-  circles.forEach((c, i) => {
-    const speed = 6 + Math.random() * 8; // seconds
-    const rangeX = 6 + Math.random() * 20; // px
-    const rangeY = 6 + Math.random() * 20; // px
+    // precise layout array (percent positions for a 1920x1080 base)
+    const layout = [
+      {x:3, y:8, size:'c-large', color:'c-yellow'},
+      {x:24, y:18, size:'c-large', color:'c-red'},
+      {x:50, y:6, size:'c-small', color:'c-blue'},
+      {x:62, y:12, size:'c-medium', color:'c-green'},
+      {x:88, y:8, size:'c-xlarge', color:'c-red'},
+      {x:10, y:54, size:'c-small', color:'c-blue'},
+      {x:4, y:96, size:'c-large', color:'c-red'},
+      {x:24, y:78, size:'c-large', color:'c-green'},
+      {x:50, y:86, size:'c-small', color:'c-yellow'},
+      {x:74, y:86, size:'c-medium', color:'c-blue'},
+      {x:88, y:70, size:'c-xlarge', color:'c-yellow'},
+      {x:82, y:36, size:'c-medium', color:'c-blue'},
+      {x:74, y:28, size:'c-small', color:'c-green'}
+    ];
 
-    c.style.transition = `transform ${speed}s ease-in-out`;
+    // clear existing and create exact elements
+    container.innerHTML = '';
+    layout.forEach((it) => {
+      const d = document.createElement('div');
+      d.className = `circle ${it.size} ${it.color}`;
+      d.style.left = `${it.x}%`;
+      d.style.top = `${it.y}%`;
+      container.appendChild(d);
+    });
 
-    let dir = 1;
-    function animate(){
-      const tx = (Math.random() * rangeX - rangeX/2) * dir;
-      const ty = (Math.random() * rangeY - rangeY/2) * dir;
-      c.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`;
-      dir *= -1;
-      // randomize next interval a bit
-      setTimeout(animate, speed * 1000 + Math.random() * 1200);
+    // gentle vertical hover for each circle
+    const circles = Array.from(document.querySelectorAll('.circle'));
+    circles.forEach((c, i) => {
+      const rect = c.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const rangeY = Math.max(8, Math.min(32, Math.round(size * 0.12)));
+      const speed = 4 + (i % 3) * 0.8; // slight variation but gentle
+      c.style.transition = `transform ${speed}s ease-in-out`;
+      let dir = i % 2 === 0 ? 1 : -1;
+      function animate(){
+        const ty = (Math.random() * rangeY - rangeY/2) * dir;
+        c.style.transform = `translate(-50%, calc(-50% + ${ty}px))`;
+        dir *= -1;
+        setTimeout(animate, speed * 1000 + 200);
+      }
+      setTimeout(animate, i * 100);
+    });
+
+    // ensure placement doesn't overlap hero-content: if any circle overlaps, nudge vertically
+    function nudgeClearSafe(){
+      const safe = (function(){
+        if(!heroContent) return null;
+        const r = heroContent.getBoundingClientRect();
+        const padX = Math.max(24, r.width * 0.04);
+        const padY = Math.max(20, r.height * 0.03);
+        return {left: r.left - padX, top: r.top - padY, right: r.right + padX, bottom: r.bottom + padY};
+      })();
+      if(!safe) return;
+      circles.forEach(c => {
+        const r = c.getBoundingClientRect();
+        const cx = r.left + r.width/2;
+        const cy = r.top + r.height/2;
+        if(cx >= safe.left && cx <= safe.right && cy >= safe.top && cy <= safe.bottom){
+          // nudge up or down depending where it is
+          const toTop = cy > (safe.top + safe.bottom)/2 ? safe.bottom + r.height : safe.top - r.height;
+          // convert px to percent and set top
+          const newY = Math.max(2, Math.min(98, (toTop / window.innerHeight) * 100));
+          c.style.top = `${newY}%`;
+        }
+      });
     }
 
-    // slight initial delay for staggered effect
-    setTimeout(animate, i * 150);
-  });
+    // run on load and resize
+    nudgeClearSafe();
+    window.addEventListener('resize', () => { nudgeClearSafe(); });
 
-  // Smooth scroll when clicking the scroll-down button
-  const btn = document.querySelector('.scroll-down');
-  const next = document.getElementById('next');
-  if(btn && next){
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      next.scrollIntoView({behavior:'smooth'});
-    });
-  }
+    // scroll button
+    const btn = document.querySelector('.scroll-down');
+    const next = document.getElementById('next');
+    if(btn && next){ btn.addEventListener('click', (e) => { e.preventDefault(); next.scrollIntoView({behavior:'smooth'}); }); }
+  });
 })();
