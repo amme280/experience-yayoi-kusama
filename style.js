@@ -84,6 +84,6 @@
     // scroll button
     const btn = document.querySelector('.scroll-down');
     const next = document.getElementById('next');
-    if(btn && next){ btn.addEventListener('click', (e) => { e.preventDefault(); next.scrollIntoView({behavior:'smooth'}); }); }
+    if(btn && next){ btn.addEventListener('click', (e) => { e.preventDefault(); next.scrollIntoView({behavior:'smooth', block: 'start'}); }); }
   });
 })();
