@@ -4,6 +4,7 @@
 // style.js - layout based on the provided maquette (1920x1080)
 (function(){
   document.addEventListener('DOMContentLoaded', () => {
+    console.log('[style.js] DOMContentLoaded — generating circles layout');
     const container = document.querySelector('.circles');
     const heroContent = document.querySelector('.hero-content');
 
