@@ -20,7 +20,7 @@
       img.classList.remove('is-visible');
     }, suspenseMs + dissolveMs + holdMs);
 
-    // when image is back to 0% opacity, wait 100ms then dissolve to white and navigate
+    // when image is  back to 0% opacity, wait 100ms then dissolve to white and navigate
     const goNextAtMs = suspenseMs + dissolveMs + holdMs + dissolveMs + nextDelayMs;
     setTimeout(() => {
       if(!pageFade){

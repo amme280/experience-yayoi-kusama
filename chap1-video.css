@@ -6,7 +6,7 @@ body{background:var(--white);overflow:hidden}
 .video-stage{position:fixed;inset:0}
 .video{width:100%;height:100%;border:0;display:block}
 
-/* Show only if autoplay-with-sound is blocked */
+/* Show only if autoplay-with-sound is blocked  */
 .sound-gate{
   position:fixed;
   inset:0;

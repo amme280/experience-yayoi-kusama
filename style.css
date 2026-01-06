@@ -145,8 +145,6 @@ html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);co
 
 .num-circle{width:var(--chap-circle-size, 96px);height:var(--chap-circle-size, 96px);border-radius:50%;display:inline-grid;place-items:center;box-shadow:0 8px 18px rgba(0,0,0,0.12);
   color: var(--blanc, #FFF);
-  leading-trim: both;
-  text-edge: cap;
   font-family: Oswald, var(--font-title);
   font-size: var(--size-chiffre-chapitre-index);
   font-style: normal;

@@ -24,7 +24,7 @@
       {x:74, y:28, size:'c-small', color:'c-green'}
     ];
 
-    // clear existing and create exact elements
+    // clear existing and create exact elements 
     container.innerHTML = '';
     layout.forEach((it) => {
       const d = document.createElement('div');

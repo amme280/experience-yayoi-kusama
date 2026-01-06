@@ -49,7 +49,7 @@
       });
     }
 
-    // Reveal quickly even if the API doesn't load.
+    // Reveal quickly even  if the API doesn't load.
     setTimeout(reveal, 250);
 
     // Ensure the IFrame API can communicate reliably (requires a real http(s) origin).

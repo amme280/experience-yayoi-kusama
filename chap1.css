@@ -8,7 +8,7 @@ body{background:var(--white);overflow:hidden}
 .casque{max-width:min(80vw, 900px);max-height:80vh;opacity:0;transition:opacity 600ms ease-in-out}
 .casque.is-visible{opacity:1}
 
-/* Page transition overlay (fade to white) */
+/* Page transition overlay  (fade to white) */
 .page-fade{position:fixed;inset:0;background:var(--white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 200ms ease-in-out}
 .page-fade.is-active{opacity:1}
 
