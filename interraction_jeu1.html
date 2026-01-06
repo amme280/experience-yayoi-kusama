@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>interraction_jeu1</title>
+  <link rel="stylesheet" href="interraction_jeu1.css" />
+</head>
+<body>
+  <main class="scene" aria-label="interraction_jeu1">
+    <img class="bg" src="images/cuisine_blanche.jpg" alt="Cuisine blanche" />
+  </main>
+
+  <div class="page-fade is-active" aria-hidden="true"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const fade = document.querySelector('.page-fade');
+      if(!fade) return;
+      // Delay before showing the cuisine image
+      setTimeout(() => {
+        fade.classList.remove('is-active');
+      }, 500);
+    });
+  </script>
+</body>
+</html>

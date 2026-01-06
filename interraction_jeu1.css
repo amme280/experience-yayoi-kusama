@@ -1,0 +1,14 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{overflow:hidden;background:#fff}
+
+.scene{position:fixed;inset:0}
+.bg{width:100%;height:100%;object-fit:cover;display:block}
+
+/* White reveal overlay */
+.page-fade{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-in-out}
+.page-fade.is-active{opacity:1}
+
+@media (prefers-reduced-motion: reduce){
+	.page-fade{transition:none}
+}
