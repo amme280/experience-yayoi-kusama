@@ -1,10 +1,21 @@
 (function(){
   document.addEventListener('DOMContentLoaded', () => {
     const fade = document.querySelector('.page-fade');
-    const video = document.getElementById('local-video');
+    const iframe = document.getElementById('yt-iframe');
+    const stage = document.querySelector('.video-stage');
     const soundGate = document.querySelector('.sound-gate');
     const soundGateBtn = document.querySelector('.sound-gate-btn');
-    if(!fade || !video) return;
+    if(!fade || !iframe) return;
+
+    function requestFullscreen(){
+      const el = stage || iframe;
+      if(!el) return;
+      try {
+        if(document.fullscreenElement) return;
+        const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        if(typeof fn === 'function') fn.call(el);
+      } catch (_) {}
+    }
 
     let isRedirecting = false;
     function goToNextPage(){
@@ -41,65 +52,87 @@
     // Reveal quickly even if the API doesn't load.
     setTimeout(reveal, 250);
 
-    // End-of-video watcher (avoid last-frame delay before redirect)
+    // Ensure the IFrame API can communicate reliably (requires a real http(s) origin).
+    try {
+      if(typeof window.location?.origin === 'string' && window.location.origin !== 'null'){
+        const url = new URL(iframe.src);
+        if(!url.searchParams.get('origin')){
+          url.searchParams.set('origin', window.location.origin);
+          iframe.src = url.toString();
+        }
+      }
+    } catch (_) {}
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    let ytPlayer = null;
+
+    // End-of-video watcher (avoid endscreen)
     let endWatchTimer = null;
     function startEndWatcher(){
-      if(endWatchTimer) return;
+      if(endWatchTimer || !ytPlayer) return;
       endWatchTimer = setInterval(() => {
         if(isRedirecting){ clearInterval(endWatchTimer); endWatchTimer = null; return; }
-        const duration = video.duration;
-        const current = video.currentTime;
-        if(Number.isFinite(duration) && duration > 0 && current >= (duration - 0.8)){
-          clearInterval(endWatchTimer);
-          endWatchTimer = null;
-          goToNextPage();
-        }
+        try {
+          const duration = ytPlayer.getDuration();
+          const current = ytPlayer.getCurrentTime();
+          if(duration && duration > 0 && current >= (duration - 0.8)){
+            clearInterval(endWatchTimer);
+            endWatchTimer = null;
+            goToNextPage();
+          }
+        } catch (_) {}
       }, 200);
     }
 
-    video.addEventListener('play', () => {
-      reveal();
-      startEndWatcher();
-    });
+    let pendingStart = false;
+    function startPlaybackWithSound(){
+      if(!ytPlayer) return;
+      hideSoundGate();
+      try { ytPlayer.unMute(); ytPlayer.setVolume(100); } catch (_) {}
+      try { ytPlayer.playVideo(); } catch (_) {}
+    }
 
-    video.addEventListener('ended', () => {
-      goToNextPage();
-    });
+    window.onYouTubeIframeAPIReady = function(){
+      ytPlayer = new YT.Player('yt-iframe', {
+        events: {
+          onReady: function(e){
+            ytPlayer = e.target;
+            // Ensure it doesn't start by itself.
+            try { ytPlayer.mute(); } catch (_) {}
+            try { ytPlayer.pauseVideo(); } catch (_) {}
 
-    // Autoplay with sound attempt.
-    // If blocked, we pause and show a visible CTA button to enable sound.
-    (async () => {
-      try {
-        video.muted = false;
-        video.volume = 1;
-        await video.play();
-
-        // Some browsers may force mute even if play() resolves.
-        setTimeout(() => {
-          if(video.muted){
-            try { video.pause(); } catch (_) {}
-            reveal();
-            showSoundGate();
+            if(pendingStart){
+              pendingStart = false;
+              startPlaybackWithSound();
+            }
+          },
+          onStateChange: function(ev){
+            if(ev.data === YT.PlayerState.PLAYING){
+              reveal();
+              startEndWatcher();
+            }
+            if(ev.data === YT.PlayerState.ENDED){
+              goToNextPage();
+            }
           }
-        }, 100);
-      } catch (_) {
-        try { video.pause(); } catch (_) {}
-        reveal();
-        showSoundGate();
-      }
-    })();
+        }
+      });
+    };
 
     if(soundGateBtn){
-      soundGateBtn.addEventListener('click', async () => {
-        hideSoundGate();
-        try {
-          video.muted = false;
-          video.volume = 1;
-          await video.play();
-        } catch (_) {
-          // If it still fails (rare), keep the gate visible.
-          showSoundGate();
+      soundGateBtn.addEventListener('click', () => {
+        reveal();
+        // Fullscreen is only allowed on a user gesture.
+        requestFullscreen();
+        if(!ytPlayer){
+          pendingStart = true;
+          return;
         }
+        startPlaybackWithSound();
       });
     }
   });
