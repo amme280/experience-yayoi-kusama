@@ -89,5 +89,18 @@
         target.scrollIntoView({behavior:'smooth', block: 'start'});
       });
     }
+
+    // chapter 1 navigation: fade to white before leaving the page
+    const chap1Link = document.getElementById('chap1-link');
+    const pageFade = document.querySelector('.page-fade');
+    if(chap1Link && pageFade){
+      chap1Link.addEventListener('click', (e) => {
+        e.preventDefault();
+        pageFade.classList.add('is-active');
+        setTimeout(() => {
+          window.location.href = chap1Link.href;
+        }, 300);
+      });
+    }
   });
 })();

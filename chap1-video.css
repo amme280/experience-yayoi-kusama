@@ -1,0 +1,67 @@
+:root{--white:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--white);overflow:hidden}
+
+.video-stage{position:fixed;inset:0}
+.video{width:100%;height:100%;border:0;display:block}
+
+/* Hide YouTube top-left channel/title overlay (best-effort)
+   Note: YouTube doesn't provide a param to fully remove it while keeping controls.
+*/
+.yt-mask{
+  position:fixed;
+  top:0;
+  left:0;
+  width:360px;
+  height:110px;
+  pointer-events:none;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width:800px){
+  .yt-mask{width:260px;height:90px}
+}
+
+/* Click-to-unmute overlay */
+.unmute{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  border:0;
+  background:transparent;
+  color:#000;
+  font-family: Oswald, sans-serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 5px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:2rem;
+  cursor:pointer;
+}
+.unmute::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#ffffff50;
+}
+.unmute > *{position:relative}
+.unmute.is-hidden{display:none}
+
+@media (max-width:800px){
+  .unmute{font-size:48px;letter-spacing:3px}
+}
+
+/* dissolve slow 200ms from white to video */
+.page-fade{position:fixed;inset:0;background:var(--white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 200ms ease-in-out}
+.page-fade.is-active{opacity:1}
+
+@media (prefers-reduced-motion: reduce){
+  .page-fade{transition:none}
+}

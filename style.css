@@ -34,6 +34,10 @@ html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);co
 
 .circles{position:fixed;inset:0;pointer-events:none;z-index:0}
 
+/* Page transition overlay (fade to white) */
+.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-out}
+.page-fade.is-active{opacity:1}
+
 /* Ensure main content sits above the animated background */
 .hero-content{position:relative;z-index:6}
 .chapters{position:relative;z-index:6}
