@@ -1,0 +1,114 @@
+:root{
+	--color-red: #D32D13;
+	--color-blue: #358BC0;
+	--color-green: #00BB27;
+	--color-yellow: #FEB70A;
+	--color-black: #1E1E1E;
+	--color-white: #FFFFFF;
+
+	--rouge: var(--color-red);
+	--blanc: var(--color-white);
+
+	--font-title: 'Oswald', sans-serif;
+	--font-text: 'Afacad', sans-serif;
+
+	--size-text: 20px;
+	--size-title-text: 36px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--color-white);color:var(--color-black);font-family:var(--font-text);font-size:var(--size-text);overflow:hidden}
+
+.page{position:fixed;inset:0}
+
+.topics{
+	--topic-size: clamp(220px, 26vw, 417px);
+	--topic-font-size: clamp(26px, 3.2vw, 50px);
+	position:absolute;
+	inset:0;
+	display:grid;
+	place-content:center;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	grid-template-rows: repeat(2, var(--topic-size));
+	gap: clamp(22px, 4vw, 64px);
+	padding: clamp(22px, 5vw, 72px);
+	justify-items:center;
+}
+
+.topic{
+	display:flex;
+	width:var(--topic-size);
+	height:var(--topic-size);
+	padding:10px;
+	justify-content:center;
+	align-items:center;
+	gap:10px;
+	border-radius:256px;
+	background: transparent;
+	text-decoration:none;
+	text-align:center;
+	user-select:none;
+	-webkit-tap-highlight-color: transparent;
+
+	font-family: var(--font-title);
+	font-size: var(--topic-font-size);
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: 2.5px;
+
+	transition: background-color 200ms ease-in, color 200ms ease-in;
+}
+
+.topic span{display:block}
+
+.topic:focus-visible{
+	outline: 2px solid color-mix(in srgb, currentColor 55%, transparent);
+	outline-offset: 6px;
+}
+
+.topic--red{color: var(--color-red)}
+.topic--blue{color: var(--color-blue)}
+.topic--yellow{color: var(--color-yellow)}
+.topic--green{color: var(--color-green)}
+.topic--black{color: var(--color-black)}
+
+.topic--red:hover,
+.topic--red:focus-visible{background-color: var(--color-red); color: var(--color-white)}
+
+.topic--blue:hover,
+.topic--blue:focus-visible{background-color: var(--color-blue); color: var(--color-white)}
+
+.topic--yellow:hover,
+.topic--yellow:focus-visible{background-color: var(--color-yellow); color: var(--color-white)}
+
+.topic--green:hover,
+.topic--green:focus-visible{background-color: var(--color-green); color: var(--color-white)}
+
+.topic--black:hover,
+.topic--black:focus-visible{background-color: var(--color-black); color: var(--color-white)}
+
+/* Layout desktop: 3 en haut, 2 en bas centrés */
+.topic--red{grid-column:1 / span 2; grid-row:1}
+.topic--blue{grid-column:3 / span 2; grid-row:1}
+.topic--yellow{grid-column:5 / span 2; grid-row:1}
+.topic--green{grid-column:2 / span 2; grid-row:2}
+.topic--black{grid-column:4 / span 2; grid-row:2}
+
+@media (max-width: 900px){
+	.topics{
+		grid-template-columns: repeat(2, var(--topic-size));
+		grid-template-rows: auto;
+		justify-items:stretch;
+	}
+	.topic--red{grid-column:auto;grid-row:auto}
+	.topic--blue{grid-column:auto;grid-row:auto}
+	.topic--yellow{grid-column:1 / -1;grid-row:auto;justify-self:center}
+	.topic--green{grid-column:auto;grid-row:auto}
+	.topic--black{grid-column:auto;grid-row:auto}
+}
+
+@media (prefers-reduced-motion: reduce){
+	.topic{transition:none}
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yayoi Kusama – Au coeur des obsessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Afacad:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="interraction_jeu1.css" />
+</head>
+<body>
+  <main class="scene" aria-label="interraction_jeu1">
+    <div class="scene__frame" id="scene-frame" aria-label="Cuisine blanche interactive">
+      <img class="scene__bg" src="images/cuisine_blanche.jpg" alt="Cuisine blanche" />
+
+      <button class="hotspot hotspot--porte" id="hotspot-porte" type="button" aria-label="Porte"></button>
+      <button class="hotspot hotspot--portrait" id="hotspot-portrait" type="button" aria-label="Portrait"></button>
+      <button class="hotspot hotspot--table" id="hotspot-table" type="button" aria-label="Table"></button>
+
+      <img class="overlay overlay--porte" src="images/porte.png" alt="" aria-hidden="true" />
+      <img class="overlay overlay--portrait" src="images/portrait.png" alt="" aria-hidden="true" />
+      <img class="overlay overlay--table" src="images/table.png" alt="" aria-hidden="true" />
+    </div>
+  </main>
+
+  <div class="info-modal" id="modal-portrait" aria-hidden="true">
+    <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Informations">
+      <h2 class="info-modal__title">Une première vision troublante :</h2>
+      <p class="info-modal__text">
+        Yayoi Kusama entretient depuis l'enfance une relation difficile avec sa famille, et plus particulièrement avec sa mère. Issue d'un milieu traditionnel japonais, sa mère n'a jamais accepté son attirance pour l'art, ni son désir d'indépendance et lui promet une vie d'épouse au foyer. Enfant, Kusama est contrainte d'espionner son père lors de ses infidélités, une expérience traumatisante qui renforce son isolement et son besoin de s'exprimer autrement. Plus tard, sa mère lui finance le voyage vers New York, mais à la seule condition qu'elle ne revienne jamais. Longtemps, Kusama sera considérée comme une honte pour sa famille, mais cette mise à l'écart deviendra aussi la clé de sa liberté artistique.
+      </p>
+    </div>
+  </div>
+
+  <div class="info-modal info-modal--table" id="modal-table" aria-hidden="true">
+    <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Informations">
+      <h2 class="info-modal__title">Des liens familiaux complexes :</h2>
+      <p class="info-modal__text">
+        Yayoi Kusama entretient depuis l’enfance une relation difficile avec sa famille, et plus particulièrement avec sa mère. Issue d’un milieu traditionnel japonais, sa mère n’a jamais accepté son attirance pour l’art, ni son désir d’indépendance et lui promet une vie d’épouse au foyer. Enfant, Kusama est contrainte d’espionner son père lors de ses infidélités, une expérience traumatisante qui renforce son isolement et son besoin de s’exprimer autrement.
+        <br><br>
+        Plus tard, sa mère lui finance le voyage vers New York, mais à la seule condition qu’elle ne revienne jamais. Longtemps, Kusama sera considérée comme une honte pour sa famille, mais cette mise à l’écart deviendra aussi la clé de sa liberté artistique.
+      </p>
+    </div>
+  </div>
+
+  <div class="info-modal info-modal--porte" id="modal-porte" aria-hidden="true">
+    <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Lancer le jeu interactif">
+      <h2 class="info-modal__question">Voulez-vous lancer le jeu interactif ?</h2>
+      <div class="info-modal__actions" role="group" aria-label="Choix">
+        <button class="info-modal__btn" type="button" data-modal-go="immersion_chap1.html">OUI</button>
+        <button class="info-modal__btn" type="button" data-modal-close>NON</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-fade is-active" aria-hidden="true"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const fade = document.querySelector('.page-fade');
+      if(!fade) return;
+      // Delay before showing the  cuisine image
+      setTimeout(() => {
+        fade.classList.remove('is-active');
+      }, 500);
+
+      const frame = document.getElementById('scene-frame');
+      if(frame){
+        const BASE_W = 1920;
+        const BASE_H = 1080;
+
+        function updateScale(){
+          const sx = window.innerWidth / BASE_W;
+          const sy = window.innerHeight / BASE_H;
+          const scale = Math.max(sx, sy);
+          frame.style.setProperty('--scene-scale', String(scale));
+        }
+
+        updateScale();
+        window.addEventListener('resize', updateScale);
+      }
+
+      // Pop-ups (portrait + table)
+      function bindModal(hotspotId, modalId){
+        const hotspot = document.getElementById(hotspotId);
+        const modal = document.getElementById(modalId);
+        if(!hotspot || !modal) return;
+
+        function openModal(){
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('is-modal-open');
+        }
+        function closeModal(){
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('is-modal-open');
+        }
+
+        hotspot.addEventListener('click', openModal);
+        modal.addEventListener('click', (e) => {
+          if(e.target === modal) closeModal();
+        });
+
+        const dialog = modal.querySelector('.info-modal__dialog');
+        if(dialog) dialog.addEventListener('click', (e) => e.stopPropagation());
+
+        const closeButtons = Array.from(modal.querySelectorAll('[data-modal-close]'));
+        closeButtons.forEach((btn) => btn.addEventListener('click', closeModal));
+
+        const goButtons = Array.from(modal.querySelectorAll('[data-modal-go]'));
+        goButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const url = btn.getAttribute('data-modal-go');
+            closeModal();
+            if(url){
+              setTimeout(() => {
+                window.location.href = url;
+              }, 300);
+            }
+          });
+        });
+      }
+
+      bindModal('hotspot-portrait', 'modal-portrait');
+      bindModal('hotspot-table', 'modal-table');
+      bindModal('hotspot-porte', 'modal-porte');
+    });
+  </script>
+</body>
+</html>

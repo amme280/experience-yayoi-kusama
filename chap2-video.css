@@ -1,0 +1,67 @@
+:root{
+  --color-red: #D32D13;
+  --color-blue: #358BC0;
+  --color-green: #00BB27;
+  --color-yellow: #FEB70A;
+  --color-black: #1E1E1E;
+  --color-white: #FFFFFF;
+
+  --blanc: var(--color-white);
+
+  --font-title: 'Oswald', sans-serif;
+  --font-text: 'Afacad', sans-serif;
+
+  --size-text: 20px;
+  --size-subtitle-text: 32px;
+  --size-title-text: 36px;
+  --size-button: 32px;
+  --letter-spacing-subtitle-text: 1.6px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--color-white);overflow:hidden}
+
+.video-stage{position:fixed;inset:0}
+.video{width:100%;height:100%;border:0;display:block}
+
+/* Show only if autoplay-with-sound is blocked */
+.sound-gate{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.5);
+  padding:2rem;
+}
+.sound-gate.is-active{display:flex}
+
+.sound-gate-btn{
+  border:0;
+  background:var(--color-blue);
+  color:var(--color-white);
+  font-family: var(--font-title);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  padding: 18px 28px;
+  border-radius: 9999px;
+  cursor:pointer;
+}
+
+@media (max-width:800px){
+  .sound-gate-btn{font-size:28px;letter-spacing:2px}
+}
+
+/* dissolve slow 200ms from white to video */
+.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 200ms ease-in-out}
+.page-fade.is-active{opacity:1}
+
+/* dissolve ease-in 600ms when leaving the page */
+.page-fade.is-ending{transition:opacity 600ms ease-in}
+
+@media (prefers-reduced-motion: reduce){
+  .page-fade{transition:none}
+}

@@ -1,0 +1,227 @@
+/* Reuse the same color tokens as style.css */
+:root{
+	--color-red: #D32D13;
+	--color-blue: #358BC0;
+	--color-green: #00BB27;
+	--color-yellow: #FEB70A;
+	--color-black: #1E1E1E;
+	--color-white: #FFFFFF;
+	--blanc: var(--color-white);
+
+	--font-title: 'Oswald', sans-serif;
+  	--font-text: 'Afacad', sans-serif;
+
+	/* typography tokens (same intent as style.css) */
+	--size-text: 20px;
+	--size-subtitle-text: 32px;
+	--size-title-text: 36px;
+	--size-button: 32px;
+	--letter-spacing-subtitle-text: 1.6px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{overflow:hidden;background:var(--color-white)}
+
+body.is-modal-open{overflow:hidden}
+
+.scene{position:fixed;inset:0;overflow:hidden;background:var(--color-white)}
+
+/* 1920x1080 reference frame scaled to "cover" the viewport */
+.scene__frame{
+	position:absolute;
+	left:50%;
+	top:50%;
+	width:1920px;
+	height:1080px;
+	transform:translate(-50%,-50%) scale(var(--scene-scale, 1));
+	transform-origin:center;
+}
+
+.scene__bg{
+	position:absolute;
+	inset:0;
+	width:100%;
+	height:100%;
+	object-fit:cover;
+	display:block;
+}
+
+.overlay{
+	position:absolute;
+	inset:0;
+	width:100%;
+	height:100%;
+	display:block;
+	pointer-events:none;
+	opacity:0;
+	transition:opacity 140ms ease;
+}
+
+.hotspot{
+	position:absolute;
+	border:0;
+	padding:0;
+	background:transparent;
+	cursor:pointer;
+}
+
+/* reveal texture overlays */
+.hotspot--porte:hover ~ .overlay--porte,
+.hotspot--porte:focus-visible ~ .overlay--porte,
+.hotspot--portrait:hover ~ .overlay--portrait,
+.hotspot--portrait:focus-visible ~ .overlay--portrait,
+.hotspot--table:hover ~ .overlay--table,
+.hotspot--table:focus-visible ~ .overlay--table{opacity:1}
+
+/* Hotspot positions (edit these values to match your image) */
+.hotspot--porte{left:1493px;top:150px;width:333px;height:830px}
+.hotspot--portrait{left:987px;top:304px;width:337px;height:298px}
+.hotspot--table{left:98px;top:620px;width:780px;height:420px}
+
+/* Info pop up (portrait) */
+.info-modal{
+	position:fixed;
+	inset:0;
+	z-index:10000;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:40px;
+	background:rgba(30,30,30,.35);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	opacity:0;
+	visibility:hidden;
+	pointer-events:none;
+	transition:opacity 300ms ease-out;
+}
+.info-modal.is-open{
+	opacity:1;
+	visibility:visible;
+	pointer-events:auto;
+}
+
+.info-modal__dialog{
+	width:890px;
+	height:auto;
+	background:var(--color-red);
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	padding:100px 100px;
+	opacity:0;
+	transition:opacity 300ms ease-out;
+}
+
+/* Left-align content for text popups (portrait + table) */
+#modal-portrait .info-modal__dialog,
+#modal-table .info-modal__dialog{
+	align-items:flex-start;
+	text-align:left;
+}
+
+/* Keep the door popup centered */
+#modal-porte .info-modal__dialog{
+	align-items:center;
+	text-align:center;
+}
+
+.info-modal.is-open .info-modal__dialog{opacity:1}
+
+/* Table modal: adapt height to content */
+.info-modal--table .info-modal__dialog{
+	padding:100px 100px;
+}
+
+.info-modal__title{
+	font-family: var(--font-title);
+	font-size: var(--size-subtitle-text);
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: var(--letter-spacing-subtitle-text);
+	margin:0 0 40px;
+	color: var(--color-white);
+}
+
+.info-modal__text{
+	margin:0;
+	font-family: var(--font-text);
+	font-size: var(--size-text);
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	color:var(--color-white);
+}
+
+/* Door modal (yes/no) */
+.info-modal--porte .info-modal__dialog{
+	gap:40px;
+}
+
+.info-modal__question{
+	margin:0;
+	font-family: var(--font-title);
+	font-size: var(--size-title-text);
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	color: var(--color-white);
+	text-align:center;
+}
+
+.info-modal__actions{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	gap:60px;
+}
+
+.info-modal__btn{
+	display:flex;
+	padding: 10px 25px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 47px;
+	background: var(--blanc, #FFF);
+	border:0;
+	cursor:pointer;
+	font-family: var(--font-text);
+	font-size: var(--size-button);
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	color: var(--color-red);
+	transition: background 200ms ease-in, color 200ms ease-in;
+}
+
+/* Door buttons: distinct hover colors */
+.info-modal--porte .info-modal__btn[data-modal-go]:hover,
+.info-modal--porte .info-modal__btn[data-modal-go]:focus-visible{
+	background: var(--color-blue);
+	color: var(--color-white);
+}
+
+.info-modal--porte .info-modal__btn[data-modal-close]:hover,
+.info-modal--porte .info-modal__btn[data-modal-close]:focus-visible{
+	background: var(--color-yellow);
+	color: var(--color-black);
+}
+
+@media (max-width:700px){
+	.info-modal{padding:18px}
+	.info-modal__dialog{width:min(890px, 100%); height:auto; padding:28px 22px}
+	.info-modal__title{font-size:22px; letter-spacing: 1.1px; margin-bottom:24px}
+	.info-modal__text{font-size:16px}
+}
+
+/* White reveal  overlay */
+.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-in-out}
+.page-fade.is-active{opacity:1}
+
+@media (prefers-reduced-motion: reduce){
+	.page-fade{transition:none}
+}
