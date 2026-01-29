@@ -1,0 +1,111 @@
+:root{
+    --color-red: #D32D13;
+	--color-blue: #358BC0;
+	--color-green: #00BB27;
+	--color-yellow: #FEB70A;
+	--color-black: #1E1E1E;
+	--color-white: #FFFFFF;
+
+	--rouge: var(--color-red);
+	--blanc: var(--color-white);
+
+	--font-title: 'Oswald', sans-serif;
+	--font-text: 'Afacad', sans-serif;
+
+	--size-text: 20px;
+	--size-title-text: 36px;
+    --size-subtitle-text: 32px;
+    --size-card-italic: 15px;
+    --size-credits: 16px;
+
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-text);
+  font-size:var(--size-text);
+  color:var(--color-black);
+  background:var(--color-white);
+}
+
+.page{min-height:100svh}
+
+.intro{
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  padding:clamp(24px, 5vw, 72px);
+}
+
+.card{
+  width:min(800px, 90vw);
+  padding:clamp(24px, 4vw, 48px);
+  display:grid;
+  gap:clamp(16px, 3vw, 28px);
+}
+
+.title{
+  font-family:var(--font-title);
+  font-size:var(--size-subtitle-text);
+  font-weight:400;
+}
+
+.text_intro{
+  font-family:var(--font-text);
+  font-size:var(--size-text);
+  line-height:1.6;
+  color:var(--color-black);
+  hyphens:none;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+
+.scroll-down{
+  --size:64px;
+  width:var(--size);
+  height:var(--size);
+  display:inline-grid;
+  place-items:center;
+  border-radius:50%;
+  border:0;
+  background:var(--color-red);
+  color:var(--color-white);
+  box-shadow:0 14px 30px rgba(0,0,0,0.28);
+  cursor:pointer;
+  justify-self:center;
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+
+.scroll-down svg{
+  width:32.275px;
+  height:32.275px;
+  transform-origin:center;
+  transform:rotate(0deg);
+  color:var(--color-white);
+  display:block;
+}
+
+.scroll-down svg path{stroke:currentColor;stroke-width:3px}
+.scroll-down:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 22px 40px rgba(0,0,0,0.36)}
+
+.suite{
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  padding:clamp(24px, 5vw, 72px);
+}
+
+.suite__inner{
+  width:min(900px, 90vw);
+  text-align:center;
+}
+
+.suite__title{
+  font-family:var(--font-title);
+  font-size:var(--size-subtitle-text);
+  margin-bottom:12px;
+}
+
+.suite__text{color:var(--color-black)}
