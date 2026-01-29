@@ -86,7 +86,7 @@
     if(btn && target){
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        target.scrollIntoView({behavior:'smooth', block: 'start'});
+        target.scrollIntoView({behavior:'smooth', block: 'center'});
       });
     }
 

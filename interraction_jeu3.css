@@ -31,7 +31,8 @@ body{background:var(--color-white);color:var(--color-black);font-family:var(--fo
 	place-content:center;
 	grid-template-columns: repeat(6, minmax(0, 1fr));
 	grid-template-rows: repeat(2, var(--topic-size));
-	gap: clamp(22px, 4vw, 64px);
+	column-gap: clamp(22px, 4vw, 64px);
+	row-gap: clamp(10px, 2.4vh, 28px);
 	padding: clamp(22px, 5vw, 72px);
 	justify-items:center;
 }
@@ -107,6 +108,14 @@ body{background:var(--color-white);color:var(--color-black);font-family:var(--fo
 	.topic--yellow{grid-column:1 / -1;grid-row:auto;justify-self:center}
 	.topic--green{grid-column:auto;grid-row:auto}
 	.topic--black{grid-column:auto;grid-row:auto}
+}
+
+@media (max-height: 760px){
+	.topics{row-gap: clamp(6px, 1.6vh, 16px)}
+}
+
+@media (max-height: 620px){
+	.topics{row-gap: clamp(4px, 1.2vh, 12px)}
 }
 
 @media (prefers-reduced-motion: reduce){

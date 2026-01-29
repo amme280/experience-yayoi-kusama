@@ -113,6 +113,7 @@ body.is-modal-open{overflow:hidden}
 	padding:100px 100px;
 	opacity:0;
 	transition:opacity 300ms ease-out;
+	position:relative;
 }
 
 /* Left-align content for text popups (portrait + table) */
@@ -154,6 +155,39 @@ body.is-modal-open{overflow:hidden}
 	font-weight: 400;
 	line-height: normal;
 	color:var(--color-white);
+}
+
+.info-modal__close{
+	position:absolute;
+	top:24px;
+	right:24px;
+	width:32px;
+	height:32px;
+	border:0;
+	background:transparent;
+	cursor:pointer;
+	padding:0;
+}
+
+.info-modal__close::before,
+.info-modal__close::after{
+	content:"";
+	position:absolute;
+	left:50%;
+	top:50%;
+	width:24px;
+	height:3px;
+	background:var(--color-white);
+	border-radius:999px;
+	transform-origin:center;
+}
+
+.info-modal__close::before{transform:translate(-50%, -50%) rotate(45deg)}
+.info-modal__close::after{transform:translate(-50%, -50%) rotate(-45deg)}
+
+.info-modal__close:focus-visible{
+	outline:2px solid var(--color-white);
+	outline-offset:4px;
 }
 
 /* Door modal (yes/no) */
@@ -216,6 +250,7 @@ body.is-modal-open{overflow:hidden}
 	.info-modal__dialog{width:min(890px, 100%); height:auto; padding:28px 22px}
 	.info-modal__title{font-size:22px; letter-spacing: 1.1px; margin-bottom:24px}
 	.info-modal__text{font-size:16px}
+	.info-modal__close{top:12px;right:12px}
 }
 
 /* White reveal  overlay */
