@@ -26,10 +26,18 @@
     <section class="suite" id="suite" aria-label="Suite">
       <div class="suite__inner">
         <div class="grid" role="list" aria-label="Sélection">
-          <button class="grid__item" type="button" role="listitem" aria-label="Élément 1"></button>
-          <button class="grid__item" type="button" role="listitem" aria-label="Élément 2"></button>
-          <button class="grid__item" type="button" role="listitem" aria-label="Élément 3"></button>
-          <button class="grid__item" type="button" role="listitem" aria-label="Élément 4"></button>
+          <button class="grid__item" type="button" role="listitem" aria-label="Élément 1" data-modal-target="modal-1" style="--card-image: url('images/INFINITY_NET_1959.jpg');">
+            <span class="grid__label">Pacific Ocean, 1960</span>
+          </button>
+          <button class="grid__item" type="button" role="listitem" aria-label="Élément 2" data-modal-target="modal-2" style="--card-image: url('images/Auto-Obliteration_1966–1974.webp');">
+            <span class="grid__label">Auto-Obliteration, 1966–1974</span>
+          </button>
+          <button class="grid__item" type="button" role="listitem" aria-label="Élément 3" data-modal-target="modal-3" style="--card-image: url('images/Flowers that blooms at midnight, 2009.jpg');">
+            <span class="grid__label">Flowers that blooms at midnight, 2009</span>
+          </button>
+          <button class="grid__item" type="button" role="listitem" aria-label="Élément 4" data-modal-target="modal-4" style="--card-image: url('images/INFINITY_NET_1959.jpg');">
+            <span class="grid__label">Pacific Ocean, 1960</span>
+          </button>
         </div>
         <a class="return" href="interraction_jeu3.html" aria-label="Retour aux thèmes">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="none" aria-hidden="true">
@@ -39,5 +47,126 @@
       </div>
     </section>
   </main>
+
+  <div class="modal" id="modal-1" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Détails de l'œuvre">
+      <button class="modal__close" type="button" aria-label="Fermer"></button>
+      <div class="modal__content">
+        <h2 class="modal__title">Pacific Ocean, 1960</h2>
+        <p class="modal__subtitle">Peinture à l’huile. Au Musée d’Art Contemporain de Tokyo.</p>
+        <p class="modal__text">
+          Kusama débute sa célèbre série de tableaux intitulée Infinity Nets à son arrivée à New York.
+          C’est lors de sa première exposition solo, à la Brata Gallery, qu’elle présente pour la
+          première fois ses toiles entièrement recouvertes de filets infinis. Par cette technique,
+          l’artiste invite le spectateur à s’approcher de l’œuvre pour en découvrir les détails, car de
+          loin ces vastes toiles peuvent sembler presque vierges.
+        </p>
+        <p class="modal__text">
+          Pour cette peinture en particulier, Kusama s’est inspirée de la vue sur l’océan Pacifique,
+          qui lui paraissait infini depuis l’avion la menant vers les États‑Unis.
+        </p>
+        <p class="modal__credit">© YAYOI KUSAMA</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-2" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Détails de l'œuvre">
+      <button class="modal__close" type="button" aria-label="Fermer"></button>
+      <div class="modal__content">
+        <h2 class="modal__title">Auto-Obliteration, 1966–1974</h2>
+        <p class="modal__subtitle">Peinture sur mannequins, table, chaises, perruques, sac, tasses, assiettes, cendrier, carafe, plantes en plastique, fleurs en plastique, fruits en plastique. - au M+ de Hong Kong </p>
+        <p class="modal__text">
+          Kusama met en scène un environnement domestique entièrement envahi par son motif signature. Mannequins, table, chaises, objets et accessoires sont recouverts de points colorés jusqu’à perdre leur forme d’origine. Cette transformation totale donne l’impression d’un monde où les identités s’effacent au profit d’un motif unique et envahissant.
+        </p>
+        <p class="modal__text">
+          Créée entre 1966 et 1974, cette installation s’inscrit dans une période où Kusama multiplie les performances autour du même thème de l’effacement de soi dans la répétition (self-oblitération). Elle crée ici une métaphore visuelle pour dénoncer les normes sociales liées à la féminité, au foyer et à l’identité.
+        </p>
+        <p class="modal__credit">© YAYOI KUSAMA</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-3" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Détails de l'œuvre">
+      <button class="modal__close" type="button" aria-label="Fermer"></button>
+      <div class="modal__content">
+        <h2 class="modal__title">Flowers that blooms at midnight, 2009</h2>
+        <p class="modal__subtitle">Sculptures.</p>
+        <p class="modal__text">
+          "Flowers That Bloom at Midnight" appartient à une série de sculptures que Kusama développe depuis 2009. Chaque fleur possède sa propre palette éclatante, ses pois caractéristiques et ses formes lisses. Pensée pour être observée sous tous les angles, la sculpture transforme l’espace en un jardin où le spectateur est invité à se déplacer tout autour. 
+        </p>
+        <p class="modal__text">
+          Les fleurs occupent une place essentielle dans l’imaginaire de Kusama. Elles apparaissent dans ses premières visions et symbolisent à la fois la vie et la mort, la fragilité et la puissance, la féminité et la masculinité. Dans cette série, Kusama réinvente la fleur en une forme joyeuse, en contraste avec les significations plus troublantes qu’elle lui associait dans ses œuvres précédentes.
+        </p>
+        <p class="modal__credit">© YAYOI KUSAMA</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-4" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Détails de l'œuvre">
+      <button class="modal__close" type="button" aria-label="Fermer"></button>
+      <div class="modal__content">
+        <h2 class="modal__title">Pacific Ocean, 1960</h2>
+        <p class="modal__subtitle">Peinture à l’huile. Au Musée d’Art Contemporain de Tokyo.</p>
+        <p class="modal__text">
+          Texte à compléter pour cette œuvre.
+        </p>
+        <p class="modal__text">
+          Texte à compléter pour cette œuvre.
+        </p>
+        <p class="modal__credit">© YAYOI KUSAMA</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const openers = Array.from(document.querySelectorAll('[data-modal-target]'));
+      if(openers.length === 0) return;
+
+      function openModal(modal){
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('is-modal-open');
+      }
+
+      function closeModal(modal){
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('is-modal-open');
+      }
+
+      openers.forEach((btn) => {
+        const targetId = btn.getAttribute('data-modal-target');
+        const modal = targetId ? document.getElementById(targetId) : null;
+        if(!modal) return;
+
+        const dialog = modal.querySelector('.modal__dialog');
+        const closeBtn = modal.querySelector('.modal__close');
+
+        btn.addEventListener('click', () => openModal(modal));
+
+        modal.addEventListener('click', (e) => {
+          if(e.target === modal) closeModal(modal);
+        });
+
+        if(dialog){
+          dialog.addEventListener('click', (e) => e.stopPropagation());
+        }
+
+        if(closeBtn){
+          closeBtn.addEventListener('click', () => closeModal(modal));
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if(e.key !== 'Escape') return;
+        const openModals = Array.from(document.querySelectorAll('.modal.is-open'));
+        openModals.forEach((modal) => closeModal(modal));
+      });
+    });
+  </script>
 </body>
 </html>
