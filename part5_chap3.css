@@ -22,7 +22,7 @@
     --grid-gap-y: 155px;
     --grid-gap-return: 180px;
     --return-offset-x: 80px;
-    --overlay-color: rgba(211, 45, 19, 0.6);
+    --overlay-color: rgba(0, 0, 0, 0.6);
     --grid-placeholder: #c4c4c4;
     --shadow-base: 0 14px 30px rgba(0,0,0,0.28);
     --shadow-hover: 0 22px 40px rgba(0,0,0,0.36);
@@ -88,7 +88,7 @@ body.is-modal-open{overflow:hidden}
   place-items:center;
   border-radius:50%;
   border:0;
-  background:var(--rouge);
+  background:var(--color-black);
   color:var(--blanc);
   box-shadow:var(--shadow-base);
   cursor:pointer;
@@ -196,8 +196,8 @@ body.is-modal-open{overflow:hidden}
   transform:translateX(var(--return-offset-x));
   border-radius:74px;
   background:var(--blanc);
-  color:var(--rouge);
-  border:1px solid var(--rouge);
+  color:var(--color-black);
+  border:1px solid var(--color-black);
   text-decoration:none;
   box-shadow:var(--shadow-base);
   transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in;
@@ -211,7 +211,7 @@ body.is-modal-open{overflow:hidden}
 
 .return:hover,
 .return:focus-visible{
-  background:var(--rouge);
+  background:var(--color-black);
   color:var(--blanc);
   box-shadow:var(--shadow-hover);
 }
@@ -231,7 +231,7 @@ body.is-modal-open{overflow:hidden}
 .modal__dialog{
   width:607px;
   height:607px;
-  background:var(--rouge);
+  background:var(--color-black);
   display:flex;
   padding-left:1px;
   justify-content:center;
