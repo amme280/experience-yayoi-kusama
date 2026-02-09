@@ -36,6 +36,9 @@ body{
 	font-weight:400;
 	letter-spacing:2px;
 	text-transform:none;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
+	animation-delay:80ms;
 }
 
 .credits__subtitle{
@@ -44,6 +47,9 @@ body{
 	font-size: 30px;
 	font-weight:100;
 	letter-spacing:2px;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
+	animation-delay:220ms;
 }
 
 .credits__grid{
@@ -67,12 +73,16 @@ body{
 	font-size:28px;
 	font-weight:400;
 	letter-spacing:1px;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
 }
 
 .credit-name{
 	font-family:var(--font-text);
 	font-size:20px;
 	font-weight:400;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
 }
 
 .credit-name--long{
@@ -89,6 +99,8 @@ body{
 	font-size:16px;
 	letter-spacing:0.6px;
 	text-align:right;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
 }
 
 .credits__cta{
@@ -105,8 +117,44 @@ body{
 	font-size:18px;
     font-weight: 500;
 	letter-spacing:0.4px;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
+	animation-delay:900ms;
 	transition:transform 150ms ease, box-shadow 150ms ease, background 150ms ease, color 150ms ease;
 	box-shadow:0 12px 20px rgba(0,0,0,0.18);
+}
+
+.credit-block:nth-child(1) .credit-title,
+.credit-block:nth-child(1) .credit-name{animation-delay:360ms}
+
+.credit-block:nth-child(2) .credit-title,
+.credit-block:nth-child(2) .credit-name{animation-delay:440ms}
+
+.credit-block:nth-child(3) .credit-title,
+.credit-block:nth-child(3) .credit-name{animation-delay:520ms}
+
+.credit-block:nth-child(4) .credit-title,
+.credit-block:nth-child(4) .credit-name{animation-delay:600ms}
+
+.credit-block.credit-block--wide .credit-title,
+.credit-block.credit-block--wide .credit-name,
+.credit-block.credit-block--wide .credit-mark{animation-delay:700ms}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .credits__title,
+  .credits__subtitle,
+  .credit-title,
+  .credit-name,
+  .credit-mark,
+  .credits__cta{
+    animation:none;
+    opacity:1;
+  }
 }
 
 .credits__arrow{

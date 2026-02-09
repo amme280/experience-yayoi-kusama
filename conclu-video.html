@@ -24,7 +24,9 @@
     const conclusionVideo = document.getElementById('conclusionVideo');
     if (conclusionVideo) {
       conclusionVideo.addEventListener('ended', () => {
-        window.location.href = 'credits.html';
+        setTimeout(() => {
+          window.location.href = 'credits.html';
+        }, 2000);
       });
     }
   </script>
