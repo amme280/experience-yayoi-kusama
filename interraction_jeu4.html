@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yayoi Kusama – Au coeur des obsessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Afacad:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="interraction_jeu4.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="viewer-page" aria-label="Interaction 3D">
+    <p class="hint">Manipulez l'oeuvre emblématique de Kusama à votre guise !</p>
+    <div id="viewer" class="viewer" aria-label="Modèle 3D citrouille"></div>
+
+    <div class="controls">
+      <button id="openWebcam" class="action-btn" type="button">Faites venir l'univers de Kusama à vous !</button>
+    </div>
+
+    <p class="viewer-note">Il s'agit d'une reproduction de l'oeuvre originale. Tout droit réservé ©YAYOI KUSAMA</p>
+  </main>
+
+  <a id="nextBtn" class="next-btn" href="conclu-video.html" aria-label="Suivant">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="none" aria-hidden="true">
+      <path d="M1.5 24.0415L24.3219 46.8634M47.1438 24.0415L24.3219 46.8634M24.3219 46.8634L24.3219 1.50021" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </a>
+
+  <div id="webcamModal" class="info-modal info-modal--porte" aria-hidden="true">
+    <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Autorisation webcam">
+      <button id="webcamClose" class="info-modal__close" type="button" aria-label="Fermer"></button>
+      <h2 class="info-modal__question">Activer la webcam ?</h2>
+      <p class="info-modal__text">Autorisez l'acces a votre webcam pour vous prendre en photo avec le filtre.</p>
+      <div class="info-modal__actions" role="group" aria-label="Choix">
+        <button id="webcamAllow" class="info-modal__btn" type="button">Autoriser</button>
+        <button id="webcamDeny" class="info-modal__btn" type="button">Refuser</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="webcamLayer" class="webcam-layer" aria-hidden="true">
+    <video id="webcamVideo" class="webcam-video" autoplay playsinline muted></video>
+  </div>
+
+  <div class="page-fade" aria-hidden="true"></div>
+
+  <script type="module" src="interraction_jeu4.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yayoi Kusama – Au coeur des obsessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="conclu-video.css" />
+</head>
+<body>
+  <main class="video-stage" aria-label="video conclusion">
+    <video
+      id="conclusionVideo"
+      class="video"
+      src="video/CONCLUSION_sans_son.mp4"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+    ></video>
+  </main>
+
+  <script>
+    const conclusionVideo = document.getElementById('conclusionVideo');
+    if (conclusionVideo) {
+      conclusionVideo.addEventListener('ended', () => {
+        window.location.href = 'credits.html';
+      });
+    }
+  </script>
+</body>
+</html>
