@@ -56,6 +56,9 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 	text-align:center;
 	line-height:1.2;
 	max-width:min(820px, calc(100vw - 32px));
+	opacity:0;
+	animation:fadeUpCenter 700ms ease-out forwards;
+	animation-delay:80ms;
 }
 
 .palette{
@@ -66,6 +69,9 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 	display:flex;
 	gap:20px;
 	align-items:center;
+	opacity:0;
+	animation:fadeUpCenter 700ms ease-out forwards;
+	animation-delay:220ms;
 }
 
 .swatch{
@@ -108,7 +114,13 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 	text-decoration:none;
 	box-shadow:0 14px 30px rgba(0,0,0,0.12);
 	transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in;
+	opacity:0;
+	animation:fadeUp 700ms ease-out forwards;
 }
+
+#download{animation-delay:360ms}
+#reset{animation-delay:440ms}
+#next{animation-delay:520ms}
 
 .icon-btn svg{width:76px;height:76px;display:block}
 
@@ -187,4 +199,15 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 
 @media (prefers-reduced-motion: reduce){
 	.page-fade,.swatch,.icon-btn,.icon-btn--small[data-tooltip]::after{transition:none}
+	.hint,.palette,.icon-btn{animation:none;opacity:1}
+}
+
+@keyframes fadeUp{
+	from{opacity:0;transform:translateY(12px)}
+	to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes fadeUpCenter{
+	from{opacity:0;transform:translateX(-50%) translateY(12px)}
+	to{opacity:1;transform:translateX(-50%) translateY(0)}
 }
