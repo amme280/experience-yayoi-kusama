@@ -1,4 +1,2 @@
 # Ignore large local media
 videos/
-*.mp4
-!video/CONCLUSION_sans_son.mp4
