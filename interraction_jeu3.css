@@ -33,8 +33,8 @@ body{background:var(--color-white);color:var(--color-black);font-family:var(--fo
 	gap:10px;
 	border-radius:74px;
 	background:var(--blanc);
-	color:var(--rouge);
-	border:1px solid var(--rouge);
+	color:var(--color-yellow);
+	border:1px solid var(--color-yellow);
 	text-decoration:none;
 	box-shadow:0 14px 30px rgba(0,0,0,0.28);
 	transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in;
@@ -49,7 +49,7 @@ body{background:var(--color-white);color:var(--color-black);font-family:var(--fo
 
 .return-home:hover,
 .return-home:focus-visible{
-	background:var(--rouge);
+	background:var(--color-yellow);
 	color:var(--blanc);
 	box-shadow:0 22px 40px rgba(0,0,0,0.36);
 }

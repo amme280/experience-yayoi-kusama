@@ -21,28 +21,34 @@
       left:28px;
       bottom:28px;
       z-index:9999;
-      display:none;
+      display:inline-flex;
+      width:80px;
+      height:80px;
+      padding:0;
       align-items:center;
       justify-content:center;
-      padding:12px 18px;
-      border-radius:999px;
-      border:1px solid #D32D13;
+      border-radius:74px;
+      border:1px solid #FEB70A;
       background:#FFFFFF;
-      color:#D32D13;
-      font-family:'Oswald', sans-serif;
-      font-size:16px;
-      letter-spacing:1px;
+      color:#FEB70A;
       cursor:pointer;
-      box-shadow:0 10px 20px rgba(0,0,0,0.12);
+      box-shadow:0 14px 30px rgba(0,0,0,0.12);
+      transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in;
     }
-    .chap3-audio-btn.is-visible{display:inline-flex;}
+    .chap3-audio-btn img{width:44px;height:44px;display:block;}
+    .chap3-audio-btn:hover img,
+    .chap3-audio-btn:focus-visible img{
+      filter: brightness(2.5) saturate(0);
+    }
     .chap3-audio-btn:hover,
     .chap3-audio-btn:focus-visible{
-      background:#D32D13;
+      background:#FEB70A;
       color:#FFFFFF;
+      box-shadow:0 20px 40px rgba(0,0,0,0.16);
     }
     @media (max-width:520px){
-      .chap3-audio-btn{left:16px;bottom:16px;font-size:14px}
+      .chap3-audio-btn{left:16px;bottom:16px;width:64px;height:64px}
+      .chap3-audio-btn img{width:36px;height:36px}
     }
   `;
   document.head.appendChild(style);
@@ -50,8 +56,26 @@
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'chap3-audio-btn';
-  button.textContent = 'Activer le son';
+  button.setAttribute('aria-label', 'Activer/Désactiver le son');
+  
+  // Create the img element for the audio icon
+  const img = document.createElement('img');
+  img.src = 'images/audio.svg';
+  img.alt = '';
+  img.setAttribute('aria-hidden', 'true');
+  button.appendChild(img);
   document.body.appendChild(button);
+
+  function updateAudioIcon(isPlaying) {
+    const img = button.querySelector('img');
+    if (isPlaying) {
+      img.src = 'images/audio.svg';
+      button.setAttribute('aria-label', 'Désactiver le son');
+    } else {
+      img.src = 'images/no-audio.svg';
+      button.setAttribute('aria-label', 'Activer le son');
+    }
+  }
 
   function saveState() {
     localStorage.setItem(STORAGE_TIME, String(audio.currentTime || 0));
@@ -86,20 +110,35 @@
       await audio.play();
       fadeTo(targetVolume, 1200);
       localStorage.setItem(STORAGE_PLAY, '1');
-      button.classList.remove('is-visible');
+      updateAudioIcon(true);
     } catch (_) {
-      button.classList.add('is-visible');
+      updateAudioIcon(false);
     }
   }
 
+  function stopAudio() {
+    audio.pause();
+    fadeTo(0, 600, () => {
+      localStorage.setItem(STORAGE_PLAY, '0');
+    });
+    updateAudioIcon(false);
+  }
+
   button.addEventListener('click', () => {
-    startAudio();
+    if (audio.paused) {
+      startAudio();
+    } else {
+      stopAudio();
+    }
   });
 
   if (localStorage.getItem(STORAGE_PLAY) === '1') {
     startAudio();
+  } else if (localStorage.getItem(STORAGE_PLAY) === '0') {
+    // L'utilisateur a explicitement désactivé le son, on le laisse désactivé
+    updateAudioIcon(false);
   } else {
-    // Try autoplay once; if blocked, show button.
+    // Première visite, on essaie le autoplay
     startAudio();
   }
 
@@ -112,6 +151,7 @@
         saveState();
         localStorage.setItem(STORAGE_PLAY, '0');
         audio.pause();
+        updateAudioIcon(false);
         window.location.href = target;
       });
     });
