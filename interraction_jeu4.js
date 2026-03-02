@@ -24,6 +24,7 @@ const nextBtn = document.getElementById('nextBtn');
 const pageFade = document.querySelector('.page-fade');
 let activeFilter = 1;
 let capturedPhotoDataUrl = '';
+let photoCounter = 1;
 
 if (!viewer) {
   throw new Error('Viewer element not found');
@@ -320,6 +321,7 @@ if (takePhotoBtn) {
 
     const dataUrl = canvas.toDataURL('image/png');
     triggerFlash();
+    photoCounter++;
     setTimeout(() => {
       enterPhotoPreview(dataUrl);
     }, 110);
@@ -357,7 +359,7 @@ if (photoDownloadBtn) {
     if (!capturedPhotoDataUrl) return;
     const link = document.createElement('a');
     link.href = capturedPhotoDataUrl;
-    link.download = `kusama-${Date.now()}.png`;
+    link.download = `Kusama-${photoCounter}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
