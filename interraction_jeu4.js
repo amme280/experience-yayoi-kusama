@@ -11,12 +11,19 @@ const webcamClose = document.getElementById('webcamClose');
 const webcamLayer = document.getElementById('webcamLayer');
 const webcamVideo = document.getElementById('webcamVideo');
 const webcamFilter = document.getElementById('webcamFilter');
+const webcamFlash = document.getElementById('webcamFlash');
 const webcamBackBtn = document.getElementById('webcamBack');
 const takePhotoBtn = document.getElementById('takePhoto');
 const webcamNextBtn = document.getElementById('webcamNext');
+const photoPreview = document.getElementById('photoPreview');
+const photoPreviewImg = document.getElementById('photoPreviewImg');
+const photoDownloadBtn = document.getElementById('photoDownload');
+const photoResetBtn = document.getElementById('photoReset');
+const photoNextBtn = document.getElementById('photoNext');
 const nextBtn = document.getElementById('nextBtn');
 const pageFade = document.querySelector('.page-fade');
 let activeFilter = 1;
+let capturedPhotoDataUrl = '';
 
 if (!viewer) {
   throw new Error('Viewer element not found');
@@ -57,8 +64,33 @@ function hideWebcamLayer() {
     webcamVideo.srcObject = null;
   }
 
+  exitPhotoPreview();
   webcamLayer.classList.remove('is-active', 'is-filter-2');
   webcamLayer.setAttribute('aria-hidden', 'true');
+}
+
+function triggerFlash() {
+  if (!webcamFlash) return;
+  webcamFlash.classList.add('is-active');
+  setTimeout(() => {
+    webcamFlash.classList.remove('is-active');
+  }, 140);
+}
+
+function enterPhotoPreview(dataUrl) {
+  if (!webcamLayer || !photoPreviewImg || !photoPreview) return;
+  capturedPhotoDataUrl = dataUrl;
+  photoPreviewImg.src = dataUrl;
+  webcamLayer.classList.add('is-preview');
+  photoPreview.setAttribute('aria-hidden', 'false');
+}
+
+function exitPhotoPreview() {
+  if (!webcamLayer || !photoPreviewImg || !photoPreview) return;
+  webcamLayer.classList.remove('is-preview');
+  photoPreview.setAttribute('aria-hidden', 'true');
+  photoPreviewImg.removeAttribute('src');
+  capturedPhotoDataUrl = '';
 }
 
 function setActiveFilter(filterNumber) {
@@ -81,6 +113,7 @@ function setActiveFilter(filterNumber) {
   webcamLayer.classList.toggle('is-filter-2', activeFilter === 2);
   if (webcamNextBtn) {
     webcamNextBtn.setAttribute('aria-label', activeFilter === 2 ? 'Revenir au filtre 1' : 'Passer au filtre 2');
+    webcamNextBtn.setAttribute('data-tooltip', activeFilter === 2 ? 'Filtre 1' : 'Filtre 2');
   }
 }
 
@@ -284,18 +317,12 @@ if (takePhotoBtn) {
     if (webcamFilter && webcamFilter.complete) {
       drawCover(ctx, webcamFilter, outputWidth, outputHeight);
     }
-    
-    // Download image
-    canvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `kusama-${Date.now()}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    });
+
+    const dataUrl = canvas.toDataURL('image/png');
+    triggerFlash();
+    setTimeout(() => {
+      enterPhotoPreview(dataUrl);
+    }, 110);
   });
 }
 
@@ -322,5 +349,34 @@ if (webcamNextBtn) {
 if (webcamBackBtn) {
   webcamBackBtn.addEventListener('click', () => {
     hideWebcamLayer();
+  });
+}
+
+if (photoDownloadBtn) {
+  photoDownloadBtn.addEventListener('click', () => {
+    if (!capturedPhotoDataUrl) return;
+    const link = document.createElement('a');
+    link.href = capturedPhotoDataUrl;
+    link.download = `kusama-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}
+
+if (photoResetBtn) {
+  photoResetBtn.addEventListener('click', () => {
+    exitPhotoPreview();
+  });
+}
+
+if (photoNextBtn) {
+  photoNextBtn.addEventListener('click', () => {
+    if (pageFade) {
+      pageFade.classList.add('is-active');
+    }
+    setTimeout(() => {
+      window.location.href = 'conclu-video.html';
+    }, 700);
   });
 }

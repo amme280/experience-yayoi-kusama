@@ -315,6 +315,7 @@ body{
 	width:100%;
 	height:100%;
 	object-fit:cover;
+	transition:filter 260ms ease;
 }
 
 .webcam-filter{
@@ -325,11 +326,139 @@ body{
 	object-fit:cover;
 	pointer-events:none;
 	opacity:1;
-	transition:opacity 220ms ease;
+	transition:opacity 220ms ease, filter 260ms ease;
 }
 
 .webcam-filter.is-fading{
 	opacity:0;
+}
+
+.webcam-flash{
+	position:fixed;
+	inset:0;
+	background:#FFFFFF;
+	opacity:0;
+	pointer-events:none;
+	z-index:23;
+	transition:opacity 160ms ease-out;
+}
+
+.webcam-flash.is-active{
+	opacity:0.92;
+}
+
+.photo-backdrop{
+	position:fixed;
+	inset:0;
+	background:rgba(0,0,0,0.48);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	opacity:0;
+	pointer-events:none;
+	transition:opacity 220ms ease;
+	z-index:22;
+}
+
+.photo-preview{
+	position:fixed;
+	left:50%;
+	top:50%;
+	width:min(76vw, 840px);
+	aspect-ratio:16 / 9;
+	transform:translate(-50%, -50%) rotate(-6deg) scale(0.9);
+	opacity:0;
+	pointer-events:none;
+	z-index:24;
+	transition:transform 260ms ease, opacity 260ms ease;
+	box-shadow:0 22px 52px rgba(0,0,0,0.42);
+	background:#FFFFFF;
+	overflow:hidden;
+}
+
+.photo-preview__img{
+	width:100%;
+	height:100%;
+	object-fit:cover;
+	display:block;
+}
+
+.photo-actions-left,
+.photo-actions-right{
+	position:fixed;
+	bottom:28px;
+	z-index:25;
+	opacity:0;
+	pointer-events:none;
+	transition:opacity 200ms ease;
+}
+
+.photo-actions-left{
+	left:28px;
+	display:flex;
+	flex-direction:column;
+	gap:16px;
+}
+
+.photo-actions-right{
+	right:28px;
+}
+
+.photo-action-btn{
+	width:80px;
+	height:80px;
+	padding:0;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	border:1px solid var(--color-green);
+	border-radius:74px;
+	background:var(--color-green);
+	color:var(--color-white);
+	box-shadow:0 14px 30px rgba(0,0,0,0.24);
+	cursor:pointer;
+	transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in, transform 200ms ease-in;
+}
+
+.photo-action-btn svg{
+	width:44px;
+	height:44px;
+	display:block;
+}
+
+.photo-actions-right .photo-action-btn svg{
+	transform:rotate(-90deg);
+}
+
+.photo-action-btn:hover,
+.photo-action-btn:focus-visible{
+	background:var(--color-white);
+	color:var(--color-green);
+	box-shadow:0 20px 40px rgba(0,0,0,0.30);
+	transform:translateY(-2px);
+}
+
+.webcam-layer.is-preview .webcam-video,
+.webcam-layer.is-preview .webcam-filter{
+	filter:blur(8px) brightness(0.52);
+}
+
+.webcam-layer.is-preview .webcam-controls,
+.webcam-layer.is-preview .webcam-back-btn,
+.webcam-layer.is-preview .webcam-gradient{
+	opacity:0;
+	pointer-events:none;
+}
+
+.webcam-layer.is-preview .photo-backdrop,
+.webcam-layer.is-preview .photo-preview,
+.webcam-layer.is-preview .photo-actions-left,
+.webcam-layer.is-preview .photo-actions-right{
+	opacity:1;
+	pointer-events:auto;
+}
+
+.webcam-layer.is-preview .photo-preview{
+	transform:translate(-50%, -50%) rotate(4deg) scale(1);
 }
 
 .webcam-back-btn{
@@ -362,6 +491,12 @@ body{
 
 .webcam-controls{
 	z-index:21;
+}
+
+.webcam-controls,
+.webcam-back-btn,
+.webcam-gradient{
+	transition:opacity 200ms ease;
 }
 
 .webcam-btn{
@@ -427,6 +562,37 @@ body{
 	transform:rotate(-90deg);
 }
 
+.webcam-btn--small[data-tooltip]::after,
+.photo-action-btn[data-tooltip]::after{
+	content:attr(data-tooltip);
+	position:absolute;
+	left:calc(100% + 14px);
+	top:50%;
+	transform:translate(-6px, -50%);
+	opacity:0;
+	pointer-events:none;
+	white-space:nowrap;
+	padding:10px 14px;
+	border-radius:9999px;
+	background:var(--blanc, #FFF);
+	border:1px solid var(--color-green);
+	color:var(--color-green);
+	font-family:var(--font-text);
+	font-size:var(--size-text);
+	line-height:1;
+	box-shadow:0 10px 20px rgba(0,0,0,0.10);
+	transition:opacity 200ms ease-in, transform 200ms ease-in;
+	z-index:40;
+}
+
+.webcam-btn--small:hover::after,
+.webcam-btn--small:focus-visible::after,
+.photo-action-btn:hover::after,
+.photo-action-btn:focus-visible::after{
+	opacity:1;
+	transform:translate(0, -50%);
+}
+
 .webcam-layer.is-filter-2 .webcam-btn--small{
 	left:calc(50% - 178px);
 }
@@ -475,6 +641,29 @@ body{
 
 	.webcam-back-btn{left:16px;bottom:16px;padding:16px}
 	.webcam-back-btn svg{width:48px;height:48px}
+
+	.photo-actions-left{left:16px;bottom:16px;gap:12px}
+	.photo-actions-right{right:16px;bottom:16px}
+	.photo-action-btn{width:64px;height:64px}
+	.photo-action-btn svg{width:36px;height:36px}
+
+	.photo-preview{
+		width:min(86vw, 680px);
+	}
+
+	.webcam-btn--small[data-tooltip]::after,
+	.photo-action-btn[data-tooltip]::after{
+		left:50%;
+		top:-12px;
+		transform:translate(-50%, -100%);
+	}
+
+	.webcam-btn--small:hover::after,
+	.webcam-btn--small:focus-visible::after,
+	.photo-action-btn:hover::after,
+	.photo-action-btn:focus-visible::after{
+		transform:translate(-50%, -100%);
+	}
 
 	.webcam-layer.is-filter-2 .webcam-btn--small{
 		left:calc(50% - 156px);
