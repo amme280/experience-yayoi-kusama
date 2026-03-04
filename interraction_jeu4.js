@@ -8,6 +8,8 @@ const webcamModal = document.getElementById('webcamModal');
 const webcamAllow = document.getElementById('webcamAllow');
 const webcamDeny = document.getElementById('webcamDeny');
 const webcamClose = document.getElementById('webcamClose');
+const transitionLayer = document.getElementById('transitionLayer');
+const transitionVideo = document.getElementById('transitionVideo');
 const webcamLayer = document.getElementById('webcamLayer');
 const webcamVideo = document.getElementById('webcamVideo');
 const webcamFilter = document.getElementById('webcamFilter');
@@ -40,6 +42,40 @@ function closeModal(){
   if(!webcamModal) return;
   webcamModal.classList.remove('is-open');
   webcamModal.setAttribute('aria-hidden', 'true');
+}
+
+function showTransition() {
+  if (!transitionLayer || !transitionVideo) return;
+  transitionLayer.classList.add('is-active');
+  transitionLayer.classList.remove('is-fading-out');
+  transitionLayer.setAttribute('aria-hidden', 'false');
+}
+
+function hideTransition() {
+  if (!transitionLayer || !transitionVideo) return;
+  transitionVideo.pause();
+  transitionVideo.currentTime = 0;
+  transitionLayer.classList.remove('is-active');
+  transitionLayer.classList.remove('is-fading-out');
+  transitionLayer.setAttribute('aria-hidden', 'true');
+}
+
+function fadeOutTransition() {
+  if (!transitionLayer || !transitionVideo) return;
+  transitionLayer.classList.add('is-fading-out');
+  setTimeout(() => {
+    hideTransition();
+  }, 320);
+}
+
+async function startWebcamFlow() {
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+  if (webcamVideo) {
+    webcamVideo.srcObject = stream;
+    await webcamVideo.play();
+  }
+  setActiveFilter(1);
+  showWebcamLayer();
 }
 
 function showWebcamLayer(){
@@ -282,18 +318,59 @@ if (webcamModal) {
 
 if (webcamAllow) {
   webcamAllow.addEventListener('click', async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      if (webcamVideo) {
-        webcamVideo.srcObject = stream;
-        await webcamVideo.play();
+    closeModal();
+
+    if (!transitionVideo || !transitionLayer) {
+      try {
+        await startWebcamFlow();
+      } catch (err) {
+        console.error('Webcam error', err);
       }
-      closeModal();
-      setActiveFilter(1);
-      showWebcamLayer();
+      return;
+    }
+
+    const onEnded = async () => {
+      transitionVideo.removeEventListener('ended', onEnded);
+      transitionVideo.removeEventListener('error', onError);
+      try {
+        // Garder la transition visible pendant le démarrage de la webcam
+        await startWebcamFlow();
+        fadeOutTransition();
+      } catch (err) {
+        console.error('Webcam error', err);
+        fadeOutTransition();
+      }
+    };
+
+    const onError = async () => {
+      transitionVideo.removeEventListener('ended', onEnded);
+      transitionVideo.removeEventListener('error', onError);
+      try {
+        await startWebcamFlow();
+        fadeOutTransition();
+      } catch (err) {
+        console.error('Webcam error', err);
+        fadeOutTransition();
+      }
+    };
+
+    transitionVideo.addEventListener('ended', onEnded);
+    transitionVideo.addEventListener('error', onError, { once: true });
+
+    try {
+      showTransition();
+      transitionVideo.currentTime = 0;
+      await transitionVideo.play();
     } catch (err) {
-      console.error('Webcam error', err);
-      closeModal();
+      console.warn('Transition video play failed, starting webcam directly', err);
+      transitionVideo.removeEventListener('ended', onEnded);
+      transitionVideo.removeEventListener('error', onError);
+      hideTransition();
+      try {
+        await startWebcamFlow();
+      } catch (webcamErr) {
+        console.error('Webcam error', webcamErr);
+      }
     }
   });
 }
