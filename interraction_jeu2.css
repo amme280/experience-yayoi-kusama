@@ -109,8 +109,8 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 	gap:10px;
 	border-radius:74px;
 	background:var(--blanc, #FFF);
-	color:var(--rouge, #D32D13);
-	border:1px solid var(--rouge, #D32D13);
+	color:var(--color-blue);
+	border:1px solid var(--color-blue);
 	text-decoration:none;
 	box-shadow:0 14px 30px rgba(0,0,0,0.12);
 	transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in;
@@ -145,8 +145,8 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 	padding:10px 14px;
 	border-radius:9999px;
 	background:var(--blanc, #FFF);
-	border:1px solid var(--rouge, #D32D13);
-	color:var(--rouge, #D32D13);
+	border:1px solid var(--color-blue);
+	color:var(--color-blue);
 	font-family:var(--font-text);
 	font-size:var(--size-text);
 	line-height:1;
@@ -162,7 +162,7 @@ body{background:var(--color-white);overflow:hidden;font-family:var(--font-text);
 
 .icon-btn:hover,
 .icon-btn:focus-visible{
-	background:var(--rouge, #D32D13);
+	background:var(--color-blue);
 	color:var(--blanc, #FFF);
 	box-shadow:0 20px 40px rgba(0,0,0,0.16);
 }
