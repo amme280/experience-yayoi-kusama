@@ -1,12 +1,12 @@
 :root{
-  --color-red: #358BC0;
-	--color-blue: #358BC0;
-	--color-green: #00BB27;
-	--color-yellow: #FEB70A;
-	--color-black: #1E1E1E;
-	--color-white: #FFFFFF;
-  --rouge: var(--color-blue);
-  --blanc: var(--color-white);
+  --couleur-rouge: #358BC0;
+	--couleur-bleu: #358BC0;
+	--couleur-vert: #00BB27;
+	--couleur-jaune: #FEB70A;
+	--couleur-noir: #1E1E1E;
+	--couleur-blanc: #FFFFFF;
+  --rouge: var(--couleur-bleu);
+  --blanc: var(--couleur-blanc);
 
 	--font-title: 'Oswald', sans-serif;
 	--font-text: 'Afacad', sans-serif;
@@ -36,8 +36,8 @@ html{scroll-behavior:smooth}
 body{
   font-family:var(--font-text);
   font-size:var(--size-text);
-  color:var(--color-black);
-  background:var(--color-white);
+  color:var(--couleur-noir);
+  background:var(--couleur-blanc);
 }
 
 body.is-modal-open{overflow:hidden}
@@ -71,7 +71,7 @@ body.is-modal-open{overflow:hidden}
   font-family:var(--font-text);
   font-size:var(--size-text);
   line-height:1.6;
-  color:var(--color-black);
+  color:var(--couleur-noir);
   hyphens:none;
   word-break:normal;
   overflow-wrap:normal;

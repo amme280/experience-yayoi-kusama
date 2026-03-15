@@ -1,12 +1,12 @@
 /* Reuse the same color tokens as style.css */
 :root{
-	--color-red: #D32D13;
-	--color-blue: #358BC0;
-	--color-green: #00BB27;
-	--color-yellow: #FEB70A;
-	--color-black: #1E1E1E;
-	--color-white: #FFFFFF;
-	--blanc: var(--color-white);
+	--couleur-rouge: #D32D13;
+	--couleur-bleu: #358BC0;
+	--couleur-vert: #00BB27;
+	--couleur-jaune: #FEB70A;
+	--couleur-noir: #1E1E1E;
+	--couleur-blanc: #FFFFFF;
+	--blanc: var(--couleur-blanc);
 
 	--font-title: 'Oswald', sans-serif;
   	--font-text: 'Afacad', sans-serif;
@@ -21,11 +21,11 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{overflow:hidden;background:var(--color-white)}
+body{overflow:hidden;background:var(--couleur-blanc)}
 
 body.is-modal-open{overflow:hidden}
 
-.scene{position:fixed;inset:0;overflow:hidden;background:var(--color-white)}
+.scene{position:fixed;inset:0;overflow:hidden;background:var(--couleur-blanc)}
 
 /* 1920x1080 reference frame scaled to "cover" the viewport */
 .scene__frame{
@@ -105,7 +105,7 @@ body.is-modal-open{overflow:hidden}
 .info-modal__dialog{
 	width:890px;
 	height:auto;
-	background:var(--color-red);
+	background:var(--couleur-rouge);
 	display:flex;
 	flex-direction:column;
 	justify-content:center;
@@ -144,7 +144,7 @@ body.is-modal-open{overflow:hidden}
 	line-height: normal;
 	letter-spacing: var(--letter-spacing-subtitle-text);
 	margin:0 0 40px;
-	color: var(--color-white);
+	color: var(--couleur-blanc);
 }
 
 .info-modal__text{
@@ -154,7 +154,7 @@ body.is-modal-open{overflow:hidden}
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	color:var(--color-white);
+	color:var(--couleur-blanc);
 }
 
 .info-modal__close{
@@ -177,7 +177,7 @@ body.is-modal-open{overflow:hidden}
 	top:50%;
 	width:24px;
 	height:3px;
-	background:var(--color-white);
+	background:var(--couleur-blanc);
 	border-radius:999px;
 	transform-origin:center;
 }
@@ -186,7 +186,7 @@ body.is-modal-open{overflow:hidden}
 .info-modal__close::after{transform:translate(-50%, -50%) rotate(-45deg)}
 
 .info-modal__close:focus-visible{
-	outline:2px solid var(--color-white);
+	outline:2px solid var(--couleur-blanc);
 	outline-offset:4px;
 }
 
@@ -202,7 +202,7 @@ body.is-modal-open{overflow:hidden}
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	color: var(--color-white);
+	color: var(--couleur-blanc);
 	text-align:center;
 }
 
@@ -228,21 +228,21 @@ body.is-modal-open{overflow:hidden}
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	color: var(--color-red);
+	color: var(--couleur-rouge);
 	transition: background 200ms ease-in, color 200ms ease-in;
 }
 
 /* Door buttons: distinct hover colors */
 .info-modal--porte .info-modal__btn[data-modal-go]:hover,
 .info-modal--porte .info-modal__btn[data-modal-go]:focus-visible{
-	background: var(--color-blue);
-	color: var(--color-white);
+	background: var(--couleur-bleu);
+	color: var(--couleur-blanc);
 }
 
 .info-modal--porte .info-modal__btn[data-modal-close]:hover,
 .info-modal--porte .info-modal__btn[data-modal-close]:focus-visible{
-	background: var(--color-yellow);
-	color: var(--color-black);
+	background: var(--couleur-jaune);
+	color: var(--couleur-noir);
 }
 
 @media (max-width:700px){
@@ -254,7 +254,7 @@ body.is-modal-open{overflow:hidden}
 }
 
 /* White reveal  overlay */
-.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-in-out}
+.page-fade{position:fixed;inset:0;background:var(--couleur-blanc);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-in-out}
 .page-fade.is-active{opacity:1}
 
 @media (prefers-reduced-motion: reduce){

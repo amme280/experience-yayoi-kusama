@@ -1,12 +1,12 @@
 :root{
-  --color-red: #D32D13;
-  --color-blue: #358BC0;
-  --color-green: #00BB27;
-  --color-yellow: #FEB70A;
-  --color-black: #1E1E1E;
-  --color-white: #FFFFFF;
+  --couleur-rouge: #D32D13;
+  --couleur-bleu: #358BC0;
+  --couleur-vert: #00BB27;
+  --couleur-jaune: #FEB70A;
+  --couleur-noir: #1E1E1E;
+  --couleur-blanc: #FFFFFF;
 
-  --blanc: var(--color-white);
+  --blanc: var(--couleur-blanc);
 
   --font-title: 'Oswald', sans-serif;
   --font-text: 'Afacad', sans-serif;
@@ -20,7 +20,7 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--color-white);color:var(--color-black);font-family:var(--font-text);font-size:var(--size-text)}
+body{background:var(--couleur-blanc);color:var(--couleur-noir);font-family:var(--font-text);font-size:var(--size-text)}
 
 a{color:inherit}
 
@@ -33,7 +33,7 @@ a{color:inherit}
 
 .card{
   width:min(760px, 100%);
-  border:1px solid color-mix(in srgb, var(--color-black) 10%, transparent);
+  border:1px solid color-mix(in srgb, var(--couleur-noir) 10%, transparent);
   border-radius:24px;
   padding:40px 34px;
   text-align:center;
@@ -55,8 +55,8 @@ a{color:inherit}
   align-items:center;
   padding:15px 25px;
   border-radius:47px;
-  background:var(--color-red);
-  color:var(--color-white);
+  background:var(--couleur-rouge);
+  color:var(--couleur-blanc);
   text-decoration:none;
   font-family:var(--font-text);
   font-size:var(--size-button);
@@ -67,7 +67,7 @@ a{color:inherit}
 .btn:hover,
 .btn:focus-visible{
   transform:scale(1.02);
-  background:color-mix(in srgb, var(--color-red) 85%, var(--color-black));
+  background:color-mix(in srgb, var(--couleur-rouge) 85%, var(--couleur-noir));
 }
 
 @media (max-width:520px){

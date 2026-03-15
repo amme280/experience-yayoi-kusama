@@ -1,19 +1,19 @@
 :root{
-  --color-red: #D32D13;
-  --color-blue: #358BC0;
-  --color-green: #00BB27;
-  --color-yellow: #FEB70A;
-  --color-black: #1E1E1E;
-  --color-white: #FFFFFF;
+  --couleur-rouge: #D32D13;
+  --couleur-bleu: #358BC0;
+  --couleur-vert: #00BB27;
+  --couleur-jaune: #FEB70A;
+  --couleur-noir: #1E1E1E;
+  --couleur-blanc: #FFFFFF;
 
-  --blanc: var(--color-white);
+  --blanc: var(--couleur-blanc);
 
   --font-title: 'Oswald', sans-serif;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--color-white);overflow:hidden}
+body{background:var(--couleur-blanc);overflow:hidden}
 
 .video-stage{position:fixed;inset:0}
 .video{width:100%;height:100%;border:0;display:block}
@@ -33,8 +33,8 @@ body{background:var(--color-white);overflow:hidden}
 
 .sound-gate-btn{
   border:0;
-  background:var(--color-green);
-  color:var(--color-white);
+  background:var(--couleur-vert);
+  color:var(--couleur-blanc);
   font-family: var(--font-title);
   font-size: 36px;
   font-weight: 400;
@@ -49,7 +49,7 @@ body{background:var(--color-white);overflow:hidden}
 }
 
 /* dissolve slow 200ms from white to video */
-.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 200ms ease-in-out}
+.page-fade{position:fixed;inset:0;background:var(--couleur-blanc);opacity:0;pointer-events:none;z-index:9999;transition:opacity 200ms ease-in-out}
 .page-fade.is-active{opacity:1}
 
 /* dissolve ease-in 600ms when leaving the page */

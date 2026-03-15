@@ -1,8 +1,8 @@
 :root{
-	--color-red: #D32D13;
-	--color-blue: #358BC0;
-	--color-white: #FFFFFF;
-	--color-text: #FFFFFF;
+	--couleur-rouge: #D32D13;
+	--couleur-bleu: #358BC0;
+	--couleur-blanc: #FFFFFF;
+	--couleur-texte: #FFFFFF;
 
 	--font-title: 'Oswald', sans-serif;
 	--font-text: 'Afacad', sans-serif;
@@ -11,8 +11,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-	background:var(--color-red);
-	color:var(--color-text);
+	background:var(--couleur-rouge);
+	color:var(--couleur-texte);
 	font-family:var(--font-text);
 }
 
@@ -110,8 +110,8 @@ body{
 	gap:16px;
 	padding:10px 18px 10px 20px;
 	border-radius:999px;
-	background:var(--color-white);
-	color:var(--color-red);
+	background:var(--couleur-blanc);
+	color:var(--couleur-rouge);
 	text-decoration:none;
 	font-family:var(--font-text);
 	font-size:18px;
@@ -166,8 +166,8 @@ body{
 .credits__cta:hover,
 .credits__cta:focus-visible{
 	transform:translateY(-1px);
-	background:var(--color-blue);
-	color:var(--color-white);
+	background:var(--couleur-bleu);
+	color:var(--couleur-blanc);
 	box-shadow:0 16px 28px rgba(0,0,0,0.2);
 }
 

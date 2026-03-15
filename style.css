@@ -1,14 +1,14 @@
 /* style.css for Yayoi Kusama landing (hero) */
 @import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400&family=Oswald:wght@200;300;400;700&display=swap');
 :root {
-  --color-red: #D32D13;
-  --color-blue: #358BC0;
-  --color-green: #00BB27;
-  --color-yellow: #FEB70A;
-  --color-black: #1E1E1E;
-  --color-white: #FFFFFF;
+  --couleur-rouge: #D32D13;
+  --couleur-bleu: #358BC0;
+  --couleur-vert: #00BB27;
+  --couleur-jaune: #FEB70A;
+  --couleur-noir: #1E1E1E;
+  --couleur-blanc: #FFFFFF;
 
-  --blanc: var(--color-white);
+  --blanc: var(--couleur-blanc);
 
   --font-title: 'Oswald', sans-serif;
   --font-text: 'Afacad', sans-serif;
@@ -29,7 +29,7 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);color:var(--color-black);background:var(--color-white);overflow-x:hidden;overscroll-behavior-y:none}
+html,body{height:100%;font-family:var(--font-text);font-size:var(--size-text);color:var(--couleur-noir);background:var(--couleur-blanc);overflow-x:hidden;overscroll-behavior-y:none}
 
 body.is-modal-open{overflow:hidden}
 
@@ -46,8 +46,8 @@ body.is-modal-open{overflow:hidden}
   display:grid;
   place-items:center;
   cursor:pointer;
-  color:var(--color-white);
-  background:var(--color-red);
+  color:var(--couleur-blanc);
+  background:var(--couleur-rouge);
   font-family:var(--font-title);
   font-weight:300;
   transition:transform 160ms ease;
@@ -58,10 +58,10 @@ body.is-modal-open{overflow:hidden}
 .lang-toggle__text{font-size:50px;line-height:1}
 
 /* override global span color */
-.lang-toggle .lang-toggle__text{color:var(--color-white)}
+.lang-toggle .lang-toggle__text{color:var(--couleur-blanc)}
 
 /* Visual state */
-.lang-toggle[data-lang="en"]{background:var(--color-blue)}
+.lang-toggle[data-lang="en"]{background:var(--couleur-bleu)}
 
 @media (max-width:800px){
   .lang-toggle{top:24px;left:24px;width:96px;height:96px}
@@ -73,7 +73,7 @@ body.is-modal-open{overflow:hidden}
 .circles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 
 /* Page transition overlay (fade to white) */
-.page-fade{position:fixed;inset:0;background:var(--color-white);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-out}
+.page-fade{position:fixed;inset:0;background:var(--couleur-blanc);opacity:0;pointer-events:none;z-index:9999;transition:opacity 300ms ease-out}
 .page-fade.is-active{opacity:1}
 
 /* Ensure main content sits above the animated background */
@@ -88,10 +88,10 @@ body.is-modal-open{overflow:hidden}
 .c-xlarge{width:var(--circle-xlarge);height:var(--circle-xlarge)}
 
 /* color classes */
-.c-red{background:var(--color-red)}
-.c-yellow{background:var(--color-yellow)}
-.c-green{background:var(--color-green)}
-.c-blue{background:var(--color-blue)}
+.c-red{background:var(--couleur-rouge)}
+.c-yellow{background:var(--couleur-jaune)}
+.c-green{background:var(--couleur-vert)}
+.c-blue{background:var(--couleur-bleu)}
 
 /* subtle inner shadow to mimic screenshot */
 .circle::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 -10px 18px rgba(0,0,0,0.06)}
@@ -99,11 +99,11 @@ body.is-modal-open{overflow:hidden}
 /* Hero content (text area) - keep above circles */
 .hero-content{position:relative;z-index:6;text-align:center;padding:clamp(3rem, 6vw, 6rem) 1.25rem;max-width:1100px;margin:0 auto}
 
-.title{font-family:var(--font-title);font-weight:400;font-size:var(--size-title-index);letter-spacing:0.02em;margin-bottom:.25rem;color:var(--color-black)}
-.subtitle{font-family:var(--font-title);font-weight:200;font-size:var(--size-subtitle-index);letter-spacing:0.02em;margin-bottom:1.25rem;color:var(--color-black)}
+.title{font-family:var(--font-title);font-weight:400;font-size:var(--size-title-index);letter-spacing:0.02em;margin-bottom:.25rem;color:var(--couleur-noir)}
+.subtitle{font-family:var(--font-title);font-weight:200;font-size:var(--size-subtitle-index);letter-spacing:0.02em;margin-bottom:1.25rem;color:var(--couleur-noir)}
 
 .lead{font-size:.95rem;color:#333;margin-bottom:2.2rem}
-.lead,p,.next-section,li,span,a,.text,.body-text{font-family:var(--font-text);font-size:var(--size-text);font-weight:400;color:var(--color-black)}
+.lead,p,.next-section,li,span,a,.text,.body-text{font-family:var(--font-text);font-size:var(--size-text);font-weight:400;color:var(--couleur-noir)}
 
 .scroll-down{
   --size:64px;
@@ -113,8 +113,8 @@ body.is-modal-open{overflow:hidden}
   place-items:center;
   border-radius:50%;
   border:0;
-  background:var(--color-red);
-  color:var(--color-white);
+  background:var(--couleur-rouge);
+  color:var(--couleur-blanc);
   box-shadow:0 14px 30px rgba(0,0,0,0.28);
   cursor:pointer;
   transition:transform .22s ease, box-shadow .22s ease;
@@ -125,7 +125,7 @@ body.is-modal-open{overflow:hidden}
   height:32.275px;
   transform-origin:center;
   transform:rotate(0deg);
-  color:var(--color-white);
+  color:var(--couleur-blanc);
   display:block;
 }
 .scroll-down svg path{stroke:currentColor;stroke-width:3px}
@@ -173,7 +173,7 @@ body.is-modal-open{overflow:hidden}
   align-items:center;
   gap:28px;
   text-decoration:none;
-  color:var(--color-black);
+  color:var(--couleur-noir);
   border-radius:999px;
   position:relative;
   isolation:isolate;
@@ -198,10 +198,10 @@ body.is-modal-open{overflow:hidden}
 }
 .chap-item:hover::before{transform:scaleX(1)}
 
-.chap-item:nth-child(1)::before{background:color-mix(in srgb, var(--color-red) 30%, transparent)}
-.chap-item:nth-child(2)::before{background:color-mix(in srgb, var(--color-blue) 30%, transparent)}
-.chap-item:nth-child(3)::before{background:color-mix(in srgb, var(--color-yellow) 30%, transparent)}
-.chap-item:nth-child(4)::before{background:color-mix(in srgb, var(--color-green) 30%, transparent)}
+.chap-item:nth-child(1)::before{background:color-mix(in srgb, var(--couleur-rouge) 30%, transparent)}
+.chap-item:nth-child(2)::before{background:color-mix(in srgb, var(--couleur-bleu) 30%, transparent)}
+.chap-item:nth-child(3)::before{background:color-mix(in srgb, var(--couleur-jaune) 30%, transparent)}
+.chap-item:nth-child(4)::before{background:color-mix(in srgb, var(--couleur-vert) 30%, transparent)}
 
 .num-circle{width:var(--chap-circle-size, 96px);height:var(--chap-circle-size, 96px);border-radius:50%;display:inline-grid;place-items:center;box-shadow:0 8px 18px rgba(0,0,0,0.12);
   color: var(--blanc, #FFF);
@@ -212,10 +212,10 @@ body.is-modal-open{overflow:hidden}
   line-height: normal;
   letter-spacing: 3px;
 }
-.num-1{background:var(--color-red)}
-.num-2{background:var(--color-blue)}
-.num-3{background:var(--color-yellow)}
-.num-4{background:var(--color-green)}
+.num-1{background:var(--couleur-rouge)}
+.num-2{background:var(--couleur-bleu)}
+.num-3{background:var(--couleur-jaune)}
+.num-4{background:var(--couleur-vert)}
 .chap-title{font-family:var(--font-title);font-size:var(--size-chapitre-index);font-weight:300;margin-right:35px;line-height:1.2;text-wrap:balance}
 
 /* Language popup (landing only) */
@@ -227,14 +227,14 @@ body.is-modal-open{overflow:hidden}
   align-items:center;
   justify-content:center;
   padding:1.5rem;
-  background:color-mix(in srgb, var(--color-black) 35%, transparent);
+  background:color-mix(in srgb, var(--couleur-noir) 35%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 .lang-modal.is-open{display:flex}
 
 .lang-modal__dialog{
-  background:var(--color-white);
+  background:var(--couleur-blanc);
   border-radius:40px;
   display:flex;
   width:701px;
@@ -269,7 +269,7 @@ body.is-modal-open{overflow:hidden}
   flex-direction:column;
   align-items:center;
   gap:10px;
-  color:var(--color-black);
+  color:var(--couleur-noir);
   font-family:var(--font-text);
   font-size:var(--size-text);
 }
