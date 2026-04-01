@@ -5,6 +5,11 @@
     const returnHome = document.getElementById('return-home');
     const skipBtn = document.querySelector('.info-modal__btn--skip');
     const videoEl = document.getElementById('video-360');
+    const backgroundMusic = new Audio('music/musique_360.wav');
+
+    backgroundMusic.loop = true;
+    backgroundMusic.preload = 'auto';
+    backgroundMusic.volume = 0.6;
 
     if(!modal || !enterBtn || !returnHome || !videoEl) return;
 
@@ -60,6 +65,13 @@
       didStart = true;
       hideModal();
 
+      try {
+        const musicPromise = backgroundMusic.play();
+        if(musicPromise && typeof musicPromise.catch === 'function'){
+          musicPromise.catch(() => {});
+        }
+      } catch (_) {}
+
       initPannellum();
       bindArrowAfterFiveSeconds();
 
@@ -109,12 +121,27 @@
       } catch (_) {}
     }
 
+    function stopBackgroundMusic(){
+      try {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+      } catch (_) {}
+    }
+
     if(returnHome){
-      returnHome.addEventListener('click', completeChapter1);
+      returnHome.addEventListener('click', () => {
+        completeChapter1();
+        stopBackgroundMusic();
+      });
     }
 
     if(skipBtn){
-      skipBtn.addEventListener('click', completeChapter1);
+      skipBtn.addEventListener('click', () => {
+        completeChapter1();
+        stopBackgroundMusic();
+      });
     }
+
+    window.addEventListener('pagehide', stopBackgroundMusic);
   });
 })();
