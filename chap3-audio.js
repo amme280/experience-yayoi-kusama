@@ -147,6 +147,26 @@
     returnHome.addEventListener('click', (event) => {
       event.preventDefault();
       const target = returnHome.getAttribute('href') || 'index.html';
+
+      const PROGRESS_KEY = 'kusama_progress';
+      const fallback = {
+        unlockedThrough: 1,
+        completed: { '1': false, '2': false, '3': false, '4': false }
+      };
+      try {
+        const parsed = JSON.parse(localStorage.getItem(PROGRESS_KEY) || 'null') || fallback;
+        const progress = {
+          unlockedThrough: Math.max(4, Number(parsed.unlockedThrough) || 1),
+          completed: {
+            '1': Boolean(parsed?.completed?.['1']),
+            '2': Boolean(parsed?.completed?.['2']),
+            '3': true,
+            '4': Boolean(parsed?.completed?.['4'])
+          }
+        };
+        localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+      } catch (_) {}
+
       fadeTo(0, 1200, () => {
         saveState();
         localStorage.setItem(STORAGE_PLAY, '0');

@@ -210,6 +210,26 @@
     if(nextLink && fade){
       nextLink.addEventListener('click', (e) => {
         e.preventDefault();
+
+        const KEY = 'kusama_progress';
+        const fallback = {
+          unlockedThrough: 1,
+          completed: { '1': false, '2': false, '3': false, '4': false }
+        };
+        try {
+          const parsed = JSON.parse(window.localStorage.getItem(KEY) || 'null') || fallback;
+          const progress = {
+            unlockedThrough: Math.max(3, Number(parsed.unlockedThrough) || 1),
+            completed: {
+              '1': Boolean(parsed?.completed?.['1']),
+              '2': true,
+              '3': Boolean(parsed?.completed?.['3']),
+              '4': Boolean(parsed?.completed?.['4'])
+            }
+          };
+          window.localStorage.setItem(KEY, JSON.stringify(progress));
+        } catch (_) {}
+
         fade.classList.add('is-active');
         const href = nextLink.getAttribute('href') || 'index.html';
         setTimeout(() => {

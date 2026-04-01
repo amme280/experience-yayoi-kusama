@@ -46,5 +46,22 @@
 			<img class="credits__arrow" src="images/fleche.svg" alt="" aria-hidden="true" />
 		</a>
 	</main>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const cta = document.querySelector('.credits__cta');
+			if(!cta) return;
+
+			cta.addEventListener('click', () => {
+				const KEY = 'kusama_progress';
+				const progress = {
+					unlockedThrough: 4,
+					completed: { '1': true, '2': true, '3': true, '4': true }
+				};
+				try {
+					window.localStorage.setItem(KEY, JSON.stringify(progress));
+				} catch (_) {}
+			});
+		});
+	</script>
 </body>
 </html>

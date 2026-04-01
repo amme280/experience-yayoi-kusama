@@ -6,6 +6,102 @@
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.circles');
     const heroContent = document.querySelector('.hero-content');
+    const PROGRESS_KEY = 'kusama_progress';
+
+    function getDefaultProgress(){
+      return {
+        unlockedThrough: 1,
+        completed: {
+          '1': false,
+          '2': false,
+          '3': false,
+          '4': false
+        }
+      };
+    }
+
+    function normalizeProgress(value){
+      const base = getDefaultProgress();
+      const src = value && typeof value === 'object' ? value : {};
+      const rawUnlock = Number(src.unlockedThrough);
+      const unlockedThrough = Number.isFinite(rawUnlock)
+        ? Math.max(1, Math.min(4, Math.floor(rawUnlock)))
+        : 1;
+
+      const completedSrc = src.completed && typeof src.completed === 'object' ? src.completed : {};
+
+      return {
+        unlockedThrough,
+        completed: {
+          '1': Boolean(completedSrc['1']),
+          '2': Boolean(completedSrc['2']),
+          '3': Boolean(completedSrc['3']),
+          '4': Boolean(completedSrc['4'])
+        }
+      };
+    }
+
+    function readProgress(){
+      try {
+        const raw = window.localStorage.getItem(PROGRESS_KEY);
+        if(!raw){
+          const initial = getDefaultProgress();
+          window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(initial));
+          return initial;
+        }
+        return normalizeProgress(JSON.parse(raw));
+      } catch (_) {
+        return getDefaultProgress();
+      }
+    }
+
+    function writeProgress(progress){
+      const normalized = normalizeProgress(progress);
+      try {
+        window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(normalized));
+      } catch (_) {}
+      return normalized;
+    }
+
+    function completeChapter(chapterNumber){
+      const chapter = Number(chapterNumber);
+      if(!Number.isFinite(chapter)) return readProgress();
+
+      const current = readProgress();
+      const next = {
+        unlockedThrough: current.unlockedThrough,
+        completed: { ...current.completed }
+      };
+
+      if(chapter >= 1 && chapter <= 4){
+        next.completed[String(chapter)] = true;
+      }
+
+      if(chapter >= 1 && chapter <= 3){
+        next.unlockedThrough = Math.max(next.unlockedThrough, chapter + 1);
+      }
+
+      if(chapter >= 4){
+        next.unlockedThrough = 4;
+      }
+
+      return writeProgress(next);
+    }
+
+    function resetProgress(){
+      return writeProgress(getDefaultProgress());
+    }
+
+    // Outils de test accessibles dans la console navigateur.
+    window.kusamaProgress = {
+      get: readProgress,
+      reset: resetProgress,
+      completeChapter,
+      unlockAll: () => writeProgress({
+        unlockedThrough: 4,
+        completed: { '1': true, '2': true, '3': true, '4': true }
+      })
+    };
 
     // precise layout array (percent positions for a 1920x1080 base)
     const layout = [
@@ -92,92 +188,48 @@
 
     // chapter navigation: fade to white before leaving the page
     const pageFade = document.querySelector('.page-fade');
-    const chap1Link = document.getElementById('chap1-link');
-    const chap2Link = document.getElementById('chap2-link');
-    const chap3Link = document.getElementById('chap3-link');
+    const chapterLinks = [
+      { element: document.getElementById('chap1-link'), chapter: 1 },
+      { element: document.getElementById('chap2-link'), chapter: 2 },
+      { element: document.getElementById('chap3-link'), chapter: 3 },
+      { element: document.getElementById('chap4-link'), chapter: 4 }
+    ].filter((item) => item.element);
 
-    function bindFadeNav(link){
-      if(!link || !pageFade) return;
-      link.addEventListener('click', (e) => {
+    function applyChapterLockState(){
+      const progress = readProgress();
+      chapterLinks.forEach(({ element, chapter }) => {
+        const isLocked = chapter > progress.unlockedThrough;
+        element.classList.toggle('is-locked', isLocked);
+        element.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
+        if(isLocked){
+          element.setAttribute('tabindex', '-1');
+        } else {
+          element.removeAttribute('tabindex');
+        }
+      });
+    }
+
+    function bindChapterNav(element, chapter){
+      if(!element) return;
+      element.addEventListener('click', (e) => {
+        const progress = readProgress();
+        if(chapter > progress.unlockedThrough){
+          e.preventDefault();
+          return;
+        }
+
+        if(!pageFade) return;
         e.preventDefault();
         pageFade.classList.add('is-active');
+        const target = element.getAttribute('href') || 'index.html';
         setTimeout(() => {
-          window.location.href = link.href;
+          window.location.href = target;
         }, 300);
       });
     }
 
-    bindFadeNav(chap1Link);
-    bindFadeNav(chap2Link);
-    bindFadeNav(chap3Link);
+    applyChapterLockState();
+    chapterLinks.forEach(({ element, chapter }) => bindChapterNav(element, chapter));
 
-    // Language popup (visual only for now)
-    const langModal = document.getElementById('lang-modal');
-    if(langModal){
-      const STORAGE_LANG_KEY = 'kusama_lang';
-      const langToggleBtn = document.getElementById('lang-toggle');
-
-      function safeGet(key){
-        try {
-          return window.localStorage.getItem(key);
-        } catch (_) {
-          try { return window.sessionStorage.getItem(key); } catch (_) { return null; }
-        }
-      }
-
-      function safeSet(key, value){
-        try {
-          window.localStorage.setItem(key, value);
-          return;
-        } catch (_) {}
-        try { window.sessionStorage.setItem(key, value); } catch (_) {}
-      }
-
-      function openLangModal(){
-        langModal.classList.add('is-open');
-        langModal.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('is-modal-open');
-      }
-
-      function closeLangModal(){
-        langModal.classList.remove('is-open');
-        langModal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('is-modal-open');
-      }
-
-      function setLanguage(lang){
-        const normalized = (lang === 'en' || lang === 'fr') ? lang : 'fr';
-        safeSet(STORAGE_LANG_KEY, normalized);
-
-        if(langToggleBtn){
-          langToggleBtn.setAttribute('data-lang', normalized);
-          const txt = langToggleBtn.querySelector('.lang-toggle__text');
-          if(txt) txt.textContent = normalized === 'en' ? 'En' : 'Fr';
-        }
-      }
-
-      // Always show on the homepage for now (dev mode).
-      openLangModal();
-
-      // Initialize toggle state from storage.
-      setLanguage(safeGet(STORAGE_LANG_KEY) || 'fr');
-
-      const buttons = Array.from(langModal.querySelectorAll('[data-lang]'));
-      buttons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const lang = btn.getAttribute('data-lang') || 'fr';
-          setLanguage(lang);
-          closeLangModal();
-        });
-      });
-
-      if(langToggleBtn){
-        langToggleBtn.addEventListener('click', () => {
-          const current = safeGet(STORAGE_LANG_KEY) || 'fr';
-          const next = current === 'en' ? 'fr' : 'en';
-          setLanguage(next);
-        });
-      }
-    }
   });
 })();

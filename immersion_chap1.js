@@ -3,6 +3,7 @@
     const modal = document.getElementById('start-modal');
     const enterBtn = document.getElementById('enter-btn');
     const returnHome = document.getElementById('return-home');
+    const skipBtn = document.querySelector('.info-modal__btn--skip');
     const videoEl = document.getElementById('video-360');
 
     if(!modal || !enterBtn || !returnHome || !videoEl) return;
@@ -86,5 +87,34 @@
     }
 
     enterBtn.addEventListener('click', startExperience);
+
+    function completeChapter1(){
+      const KEY = 'kusama_progress';
+      const fallback = {
+        unlockedThrough: 1,
+        completed: { '1': false, '2': false, '3': false, '4': false }
+      };
+      try {
+        const parsed = JSON.parse(window.localStorage.getItem(KEY) || 'null') || fallback;
+        const progress = {
+          unlockedThrough: Math.max(2, Number(parsed.unlockedThrough) || 1),
+          completed: {
+            '1': true,
+            '2': Boolean(parsed?.completed?.['2']),
+            '3': Boolean(parsed?.completed?.['3']),
+            '4': Boolean(parsed?.completed?.['4'])
+          }
+        };
+        window.localStorage.setItem(KEY, JSON.stringify(progress));
+      } catch (_) {}
+    }
+
+    if(returnHome){
+      returnHome.addEventListener('click', completeChapter1);
+    }
+
+    if(skipBtn){
+      skipBtn.addEventListener('click', completeChapter1);
+    }
   });
 })();
