@@ -27,6 +27,29 @@ body.is-modal-open{overflow:hidden}
 
 .scene{position:fixed;inset:0;overflow:hidden;background:var(--couleur-blanc)}
 
+.hint{
+	position:fixed;
+	top:28px;
+	left:50%;
+	transform:translateX(-50%);
+	z-index:12;
+	margin:0;
+	padding:14px 18px;
+	font-family:var(--font-text);
+	font-size:var(--size-text);
+	border-radius:9999px;
+	background:color-mix(in srgb, var(--couleur-blanc) 78%, transparent);
+	border:1px solid color-mix(in srgb, var(--couleur-noir) 10%, transparent);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	text-align:center;
+	line-height:1.2;
+	max-width:min(920px, calc(100vw - 32px));
+	opacity:0;
+	animation:hintFadeUp 700ms ease-out forwards;
+	animation-delay:80ms;
+}
+
 /* 1920x1080 reference frame scaled to "cover" the viewport */
 .scene__frame{
 	position:absolute;
@@ -246,6 +269,7 @@ body.is-modal-open{overflow:hidden}
 }
 
 @media (max-width:700px){
+	.hint{top:16px}
 	.info-modal{padding:18px}
 	.info-modal__dialog{width:min(890px, 100%); height:auto; padding:28px 22px}
 	.info-modal__title{font-size:22px; letter-spacing: 1.1px; margin-bottom:24px}
@@ -259,4 +283,10 @@ body.is-modal-open{overflow:hidden}
 
 @media (prefers-reduced-motion: reduce){
 	.page-fade{transition:none}
+	.hint{animation:none;opacity:1}
+}
+
+@keyframes hintFadeUp{
+	from{opacity:0;transform:translateX(-50%) translateY(12px)}
+	to{opacity:1;transform:translateX(-50%) translateY(0)}
 }
