@@ -18,9 +18,7 @@
     let didStart = false;
     let didShowReturn = false;
     let player = null;
-    let pannellumInitialized = false;
     let watcherBound = false;
-    let arrowTimer = null;
     let didRevealExperience = false;
 
     function debugLog(message, extra){
@@ -39,21 +37,6 @@
       }
     }
 
-    function bindVideoDiagnostics(){
-      const events = ['loadstart', 'loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough', 'waiting', 'stalled', 'error'];
-      events.forEach((eventName) => {
-        videoEl.addEventListener(eventName, () => {
-          if(eventName === 'error'){
-            debugWarn('Erreur video', videoEl.error ? videoEl.error.code : 'inconnue');
-            return;
-          }
-          debugLog(`Video event: ${eventName}`);
-        });
-      });
-    }
-
-    bindVideoDiagnostics();
-
     function revealExperience(){
       if(didRevealExperience) return;
       didRevealExperience = true;
@@ -69,213 +52,82 @@
     }
 
     function hideModal(){
-      try {
-        enterBtn.blur();
-      } catch (_) {}
+      try { enterBtn.blur(); } catch(_) {}
       modal.classList.remove('is-open');
     }
 
-    function bindArrowAfterFiveSeconds(){
+    function bindArrow(){
       if(watcherBound) return;
       watcherBound = true;
-
-      const checkAndShow = () => {
-        const currentTime = (player && typeof player.currentTime === 'function')
-          ? Number(player.currentTime()) || 0
-          : Number(videoEl.currentTime) || 0;
-
-        if(currentTime >= 5){
-          showReturnArrow();
-        }
+      const check = () => {
+        const t = player ? (Number(player.currentTime()) || 0) : (Number(videoEl.currentTime) || 0);
+        if(t >= 5) showReturnArrow();
       };
-
-      if(player && typeof player.on === 'function'){
-        player.on('timeupdate', checkAndShow);
-      }
-
-      videoEl.addEventListener('timeupdate', checkAndShow);
+      if(player) player.on('timeupdate', check);
+      videoEl.addEventListener('timeupdate', check);
     }
 
-    function waitForMetadata(timeoutMs){
-      return new Promise((resolve) => {
-        let done = false;
-        let timer = 0;
-
-        function finish(ok){
-          if(done) return;
-          done = true;
-          window.clearTimeout(timer);
-          videoEl.removeEventListener('canplay', onCanPlay);
-          videoEl.removeEventListener('error', onError);
-          resolve(ok);
-        }
-
-        if(videoEl.readyState >= 3){
-          debugLog('Video deja prete (readyState >= 3).');
-          finish(true);
-          return;
-        }
-
-        function onCanPlay(){ 
-          debugLog('Video prete a jouer (canplay).');
-          finish(true); 
-        }
-        function onError(){ 
-          debugWarn('Erreur chargement video.');
-          finish(false); 
-        }
-
-        videoEl.addEventListener('canplay', onCanPlay);
-        videoEl.addEventListener('error', onError);
-        timer = window.setTimeout(() => {
-          debugWarn('Timeout attente video.');
-          finish(false);
-        }, timeoutMs);
-
-        try { videoEl.load(); } catch (_) {}
-      });
-    }
-
-    function initPannellum(){
-      if(pannellumInitialized) return Boolean(player);
-      if(typeof window.videojs !== 'function'){
-        debugWarn('Video.js indisponible, fallback natif.');
-        return false;
-      }
-
+    // --- Initialisation du player au chargement de la page ---
+    // La vidéo précharge pendant que le modal est affiché.
+    // Au clic Entrer, player.play() est appelé directement → Pannellum a des frames réelles.
+    function initPlayer(){
+      if(typeof window.videojs !== 'function') return;
       try {
         player = window.videojs('video-360', {
           autoplay: false,
           controls: false,
           loop: true,
-          plugins: {
-            pannellum: {}
-          }
+          plugins: { pannellum: {} }
         });
-
-        player.on('loadeddata', () => {
-          debugLog('Player event: loadeddata');
-        });
-        player.on('canplay', () => {
-          debugLog('Player event: canplay');
-        });
-        player.on('play', () => {
-          debugLog('Player event: play');
-        });
-        player.on('playing', () => {
-          debugLog('Player event: playing');
-          revealExperience();
-        });
+        player.on('playing', () => { revealExperience(); });
         player.on('timeupdate', () => {
-          if((Number(player.currentTime()) || 0) > 0.05){
-            revealExperience();
-          }
+          if((Number(player.currentTime()) || 0) > 0.1) revealExperience();
         });
         player.on('error', () => {
-          debugWarn('Player error', player.error ? player.error() : 'inconnue');
+          console.warn('[immersion-360] Player error.');
         });
-
-        if(videoEl.readyState >= 2){
-          debugLog('Synchronisation Pannellum sur loadeddata deja recu.');
-          player.trigger('loadeddata');
-        }
-
-        if(videoEl.readyState >= 3){
-          debugLog('Synchronisation Pannellum sur canplay deja recu.');
-          player.trigger('canplay');
-        }
-
-        pannellumInitialized = true;
-        debugLog('Pannellum initialise.');
-        return true;
-      } catch (err) {
-        debugWarn('Echec initialisation Pannellum, fallback natif.', err);
-        return false;
+        console.log('[immersion-360] Player initialise au chargement.');
+      } catch(err) {
+        console.warn('[immersion-360] Echec init player.', err);
+        player = null;
       }
     }
+
+    initPlayer();
 
     function startBackgroundMusic(){
       try {
-        const musicPromise = backgroundMusic.play();
-        if(musicPromise && typeof musicPromise.catch === 'function'){
-          musicPromise.catch((err) => {
-            debugWarn('Lecture musique bloquee.', err);
-          });
-        }
-      } catch (err) {
-        debugWarn('Impossible de lancer la musique.', err);
-      }
+        const p = backgroundMusic.play();
+        if(p && p.catch) p.catch(() => {});
+      } catch(_) {}
     }
 
-    function playVideoNative(){
-      try {
-        videoEl.muted = false;
-        videoEl.volume = 1;
-        const playPromise = videoEl.play();
-        if(playPromise && typeof playPromise.catch === 'function'){
-          playPromise.catch((err) => {
-            debugWarn('Lecture video native bloquee.', err);
-          });
-        }
-      } catch (err) {
-        debugWarn('Echec lecture video native.', err);
-      }
-    }
-
-    videoEl.addEventListener('playing', revealExperience);
-    videoEl.addEventListener('timeupdate', () => {
-      if((Number(videoEl.currentTime) || 0) > 0.05){
-        revealExperience();
-      }
-    });
-
-    function playBestVideo(){
-      if(player){
-        try {
-          debugLog('Tentative lecture Pannellum.');
-          player.muted(false);
-          player.volume(1);
-          if(player.pnlmViewer && typeof player.pnlmViewer.setUpdate === 'function' && videoEl.readyState > 1){
-            player.pnlmViewer.setUpdate(true);
-          }
-          const playPromise = player.play();
-          if(playPromise && typeof playPromise.catch === 'function'){
-            playPromise.catch((err) => {
-              debugWarn('Lecture Pannellum bloquee, fallback natif.', err);
-              playVideoNative();
-            });
-          }
-          return;
-        } catch (err) {
-          debugWarn('Echec player Pannellum, fallback natif.', err);
-        }
-      }
-      playVideoNative();
-    }
-
-    async function startExperience(){
+    function startExperience(){
       if(didStart) return;
       didStart = true;
       hideModal();
-
-      debugLog('Demarrage immersion.');
       startBackgroundMusic();
+      bindArrow();
+      setTimeout(showReturnArrow, 5000);
 
-      bindArrowAfterFiveSeconds();
-
-      if(!arrowTimer){
-        arrowTimer = setTimeout(showReturnArrow, 5000);
+      if(player){
+        console.log('[immersion-360] Lancement player.');
+        player.muted(false);
+        player.volume(1);
+        const p = player.play();
+        if(p && p.catch) p.catch(() => {
+          console.warn('[immersion-360] play() bloque.');
+        });
+      } else {
+        console.log('[immersion-360] Lecture video native.');
+        try {
+          videoEl.muted = false;
+          videoEl.volume = 1;
+          videoEl.addEventListener('playing', revealExperience, { once: true });
+          const p = videoEl.play();
+          if(p && p.catch) p.catch(() => {});
+        } catch(_) {}
       }
-
-      const metadataReady = await waitForMetadata(12000);
-      if(!metadataReady){
-        debugWarn('Metadonnees video indisponibles, tentative lecture native.');
-        playVideoNative();
-        return;
-      }
-
-      initPannellum();
-      playBestVideo();
     }
 
     enterBtn.addEventListener('click', () => {

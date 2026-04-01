@@ -103,6 +103,10 @@ a{color:inherit}
   opacity:1;
 }
 
+.immersive.is-active .pnlm-container{
+  visibility:visible !important;
+}
+
 .return-home{
   position:fixed;
   right:28px;
