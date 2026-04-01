@@ -3,6 +3,7 @@
     const canvas = document.getElementById('artboard');
     const downloadBtn = document.getElementById('download');
     const resetBtn = document.getElementById('reset');
+    const undoBtn = document.getElementById('undo');
     const nextLink = document.getElementById('next');
     const fade = document.querySelector('.page-fade');
 
@@ -89,6 +90,17 @@
       if(rafId){ cancelAnimationFrame(rafId); rafId = 0; }
       active = null;
       circles.length = 0;
+      redraw();
+    }
+
+    function undoLastMove(){
+      if(rafId){ cancelAnimationFrame(rafId); rafId = 0; }
+      if(active && active.active){
+        active.active = false;
+        active = null;
+      }
+      if(!circles.length) return;
+      circles.pop();
       redraw();
     }
 
@@ -185,6 +197,12 @@
       resetBtn.addEventListener('click', () => {
         endPress();
         resetArtwork();
+      });
+    }
+
+    if(undoBtn){
+      undoBtn.addEventListener('click', () => {
+        undoLastMove();
       });
     }
 

@@ -3,16 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Yayoi Kusama – Au coeur des obsessions</title>  <link rel="icon" href="images/favicon.png" type="image/png">  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Afacad:wght@400&display=swap" rel="stylesheet">
+  <title>Yayoi Kusama – Au coeur des obsessions</title>
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Afacad:wght@400&display=swap" rel="stylesheet">
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
   <link rel="stylesheet" href="immersion_chap1.css" />
 </head>
 <body>
-  <main class="page" aria-label="Immersion chapitre 1">
-    <div class="card">
-      <h1 class="title">Immersion – Chapitre 1</h1>
-      <p class="text">Jeu interactif à venir. (Page temporaire)</p>
-      <a class="btn" href="index.html#chapitrage">Continuer</a>
-    </div>
+  <main class="immersive" aria-label="Immersion chapitre 1">
+    <video
+      id="video-360"
+      class="immersive__video video-js vjs-default-skin vjs-big-play-centered"
+      preload="metadata"
+      playsinline
+      crossorigin="anonymous"
+    >
+      <source src="extrait_video360.mp4" type="video/mp4" />
+    </video>
+
+    <a class="return-home" id="return-home" href="index.html#chapitrage" aria-label="Retour à l'accueil">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" fill="none" aria-hidden="true">
+        <path d="M1.5 24.0415L24.3219 46.8634M47.1438 24.0415L24.3219 46.8634M24.3219 46.8634L24.3219 1.50021" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </a>
   </main>
+
+  <div class="info-modal is-open" id="start-modal" aria-hidden="false">
+    <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Lancer l'immersion 360">
+      <p class="info-modal__info">Vous êtes sur le point d'entrer dans une représentation de la première hallucination de l'artiste.</p>
+      <p class="info-modal__question">Souhaitez-vous continuez ?</p>
+      <div class="info-modal__actions" role="group" aria-label="Choix de navigation">
+        <button class="info-modal__btn" id="enter-btn" type="button">Rentrer</button>
+        <a class="info-modal__btn info-modal__btn--skip" href="index.html#chapitrage">Passer</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script src="https://pannellum.org/js/videojs-pannellum-plugin.js"></script>
+  <script src="immersion_chap1.js"></script>
 </body>
 </html>

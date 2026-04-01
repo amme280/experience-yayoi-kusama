@@ -120,7 +120,8 @@ body{background:var(--couleur-blanc);overflow:hidden;font-family:var(--font-text
 
 #download{animation-delay:360ms}
 #reset{animation-delay:440ms}
-#next{animation-delay:520ms}
+#undo{animation-delay:520ms}
+#next{animation-delay:600ms}
 
 .icon-btn svg{width:76px;height:76px;display:block}
 
@@ -130,7 +131,8 @@ body{background:var(--couleur-blanc);overflow:hidden;font-family:var(--font-text
 	padding:0;
 }
 
-.icon-btn--small svg{width:44px;height:44px}
+.icon-btn--small svg{width:34px;height:34px}
+
 
 /* Tooltip for reset/download */
 .icon-btn--small[data-tooltip]::after{
@@ -169,6 +171,7 @@ body{background:var(--couleur-blanc);overflow:hidden;font-family:var(--font-text
 
 #download{left:28px;bottom:28px}
 #reset{left:28px;bottom:124px}
+#undo{left:28px;bottom:220px}
 #next{right:28px;bottom:28px}
 #next svg{transform:rotate(-90deg);width:66px;height:66px}
 
@@ -188,6 +191,7 @@ body{background:var(--couleur-blanc);overflow:hidden;font-family:var(--font-text
 	.icon-btn--small:hover::after,
 	.icon-btn--small:focus-visible::after{transform:translate(-50%, -100%)}
 	#reset{left:16px;bottom:96px}
+	#undo{left:16px;bottom:176px}
 	#next svg{width:48px;height:48px}
 	#download{left:16px;bottom:16px}
 	#next{right:16px;bottom:16px}
