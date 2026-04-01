@@ -12,6 +12,14 @@
 </head>
 <body>
   <main class="immersive" aria-label="Immersion chapitre 1">
+    <img
+      id="video-preview"
+      class="immersive__preview"
+      src="images/image_affichage.png"
+      alt="Apercu de l'immersion"
+      aria-hidden="true"
+    />
+
     <video
       id="video-360"
       class="immersive__video video-js vjs-default-skin vjs-big-play-centered"
@@ -29,7 +37,7 @@
     </a>
   </main>
 
-  <div class="info-modal is-open" id="start-modal" aria-hidden="false">
+  <div class="info-modal is-open" id="start-modal">
     <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Lancer l'immersion 360">
       <p class="info-modal__info">Vous êtes sur le point d'entrer dans une représentation de la première hallucination de l'artiste.</p>
       <p class="info-modal__question">Souhaitez-vous continuer ?</p>

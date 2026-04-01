@@ -39,6 +39,30 @@ a{color:inherit}
   display:block;
 }
 
+.immersive__preview{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  background:#000;
+  opacity:1;
+  transform:scale(1);
+  filter:none;
+  transition:opacity 520ms ease, transform 900ms ease, filter 520ms ease, visibility 0s linear 520ms;
+  z-index:2;
+  pointer-events:none;
+  visibility:visible;
+}
+
+.immersive__preview.is-hidden{
+  opacity:0;
+  transform:scale(1.015);
+  filter:blur(4px);
+  visibility:hidden;
+}
+
 .video-js,
 .video-js .vjs-tech,
 .video-js .vjs-poster{
@@ -56,6 +80,27 @@ a{color:inherit}
 .video-js .vjs-loading-spinner,
 .video-js .vjs-text-track-display{
   display:none !important;
+}
+
+.pnlm-load-box,
+.pnlm-about-msg,
+.pnlm-load-button{
+  display:none !important;
+}
+
+.immersive__video,
+.video-js,
+.video-js .vjs-tech,
+.pnlm-container{
+  opacity:0;
+  transition:opacity 380ms ease;
+}
+
+.immersive.is-active .immersive__video,
+.immersive.is-active .video-js,
+.immersive.is-active .video-js .vjs-tech,
+.immersive.is-active .pnlm-container{
+  opacity:1;
 }
 
 .return-home{

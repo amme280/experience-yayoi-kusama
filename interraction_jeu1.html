@@ -85,6 +85,36 @@
         window.addEventListener('resize', updateScale);
       }
 
+      const hoverAudio = new Audio('music/son_pop-up_chap_1.mp3');
+      hoverAudio.preload = 'auto';
+      hoverAudio.volume = 0.5;
+
+      let lastHoverSoundAt = 0;
+      function playHoverSound(){
+        const now = Date.now();
+        if(now - lastHoverSoundAt < 120) return;
+        lastHoverSoundAt = now;
+
+        try {
+          hoverAudio.currentTime = 0;
+          const playPromise = hoverAudio.play();
+          if(playPromise && typeof playPromise.catch === 'function'){
+            playPromise.catch(() => {});
+          }
+        } catch (_) {}
+      }
+
+      const hoverHotspots = [
+        document.getElementById('hotspot-porte'),
+        document.getElementById('hotspot-portrait'),
+        document.getElementById('hotspot-table')
+      ].filter(Boolean);
+
+      hoverHotspots.forEach((hotspot) => {
+        hotspot.addEventListener('mouseenter', playHoverSound);
+        hotspot.addEventListener('focus', playHoverSound);
+      });
+
       // Pop-ups (portrait + table)
       function bindModal(hotspotId, modalId){
         const hotspot = document.getElementById(hotspotId);
