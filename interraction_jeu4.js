@@ -8,6 +8,8 @@ const webcamModal = document.getElementById('webcamModal');
 const webcamAllow = document.getElementById('webcamAllow');
 const webcamDeny = document.getElementById('webcamDeny');
 const webcamClose = document.getElementById('webcamClose');
+const transitionLayer = document.getElementById('transitionLayer');
+const transitionVideo = document.getElementById('transitionVideo');
 const webcamLayer = document.getElementById('webcamLayer');
 const webcamVideo = document.getElementById('webcamVideo');
 const webcamFilter = document.getElementById('webcamFilter');
@@ -40,6 +42,61 @@ function closeModal(){
   if(!webcamModal) return;
   webcamModal.classList.remove('is-open');
   webcamModal.setAttribute('aria-hidden', 'true');
+}
+
+function showTransition(){
+  if(!transitionLayer || !transitionVideo) return;
+  transitionLayer.classList.add('is-active');
+  transitionLayer.classList.remove('is-fading-out');
+  transitionLayer.setAttribute('aria-hidden', 'false');
+}
+
+function hideTransition(){
+  if(!transitionLayer || !transitionVideo) return;
+  transitionVideo.pause();
+  transitionVideo.currentTime = 0;
+  transitionLayer.classList.remove('is-active');
+  transitionLayer.classList.remove('is-fading-out');
+  transitionLayer.setAttribute('aria-hidden', 'true');
+}
+
+function fadeOutTransition(){
+  if(!transitionLayer || !transitionVideo) return;
+  transitionLayer.classList.add('is-fading-out');
+  window.setTimeout(hideTransition, 320);
+}
+
+function playTransitionToEnd(){
+  return new Promise(async (resolve, reject) => {
+    if(!transitionLayer || !transitionVideo){
+      reject(new Error('Transition elements missing'));
+      return;
+    }
+
+    let done = false;
+    const finish = (ok, err) => {
+      if(done) return;
+      done = true;
+      transitionVideo.removeEventListener('ended', onEnded);
+      transitionVideo.removeEventListener('error', onError);
+      if(ok) resolve();
+      else reject(err || new Error('Transition failed'));
+    };
+
+    const onEnded = () => finish(true);
+    const onError = () => finish(false, new Error('Transition video error'));
+
+    transitionVideo.addEventListener('ended', onEnded, { once: true });
+    transitionVideo.addEventListener('error', onError, { once: true });
+
+    try {
+      showTransition();
+      transitionVideo.currentTime = 0;
+      await transitionVideo.play();
+    } catch (err) {
+      finish(false, err);
+    }
+  });
 }
 
 function showWebcamLayer(){
@@ -198,6 +255,7 @@ controls.enableZoom = false;
 
 let isRenderPaused = false;
 let rafId = 0;
+let isWebcamFlowRunning = false;
 
 let model = null;
 
@@ -301,20 +359,33 @@ if (webcamModal) {
 
 if (webcamAllow) {
   webcamAllow.addEventListener('click', async () => {
+    if(isWebcamFlowRunning) return;
+    isWebcamFlowRunning = true;
+    webcamAllow.disabled = true;
+
     pause3DRender();
+    closeModal();
+
     try {
+      await playTransitionToEnd();
+
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       if (webcamVideo) {
         webcamVideo.srcObject = stream;
         await webcamVideo.play();
       }
-      closeModal();
+
       setActiveFilter(1);
       showWebcamLayer();
+      fadeOutTransition();
     } catch (err) {
-      console.error('Webcam error', err);
-      closeModal();
+      console.error('Transition / webcam error', err);
+      hideTransition();
+      openModal();
       resume3DRender();
+    } finally {
+      webcamAllow.disabled = false;
+      isWebcamFlowRunning = false;
     }
   });
 }
