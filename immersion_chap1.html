@@ -37,6 +37,10 @@
     </a>
   </main>
 
+  <button class="fullscreen-btn" id="fullscreen-btn" type="button" aria-label="Activer le plein écran" title="Plein écran" data-tooltip="Plein écran">
+      <span class="fullscreen-btn__icon" aria-hidden="true"></span>
+  </button>
+
   <div class="info-modal is-open" id="start-modal">
     <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Lancer l'immersion 360">
       <p class="info-modal__info">Vous êtes sur le point d'entrer dans une représentation de la première hallucination de l'artiste.</p>
@@ -54,3 +58,34 @@
   <script src="immersion_chap1.js"></script>
 </body>
 </html>
+
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+            function setFullscreenLabel() {
+                if (!fullscreenBtn) return;
+                const isFullscreen = Boolean(document.fullscreenElement);
+                fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Quitter le plein écran' : 'Activer le plein écran');
+                fullscreenBtn.setAttribute('title', isFullscreen ? 'Quitter le plein écran' : 'Plein écran');
+                fullscreenBtn.setAttribute('data-tooltip', isFullscreen ? 'Quitter' : 'Plein écran');
+                fullscreenBtn.classList.toggle('is-fullscreen', isFullscreen);
+            }
+
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', async () => {
+                    try {
+                        if (!document.fullscreenElement) {
+                            await document.documentElement.requestFullscreen();
+                        } else {
+                            await document.exitFullscreen();
+                        }
+                    } catch (_) {}
+                    setFullscreenLabel();
+                });
+
+                document.addEventListener('fullscreenchange', setFullscreenLabel);
+                setFullscreenLabel();
+            }
+        });
+    </script>

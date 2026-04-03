@@ -89,6 +89,89 @@ body.is-modal-open{overflow:hidden}
 	cursor:pointer;
 }
 
+.fullscreen-btn{
+	position:fixed;
+	right:24px;
+	top:24px;
+	width:50px;
+	height:50px;
+	border-radius:50%;
+	border:1px solid var(--couleur-rouge);
+	background:var(--couleur-blanc);
+	color:var(--couleur-rouge);
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	cursor:pointer;
+	box-shadow:0 14px 30px rgba(0,0,0,0.12);
+	transition:box-shadow 200ms ease-in, background 200ms ease-in, color 200ms ease-in, transform 180ms ease;
+	z-index:10001;
+}
+
+.fullscreen-btn[data-tooltip]::after{
+	content:attr(data-tooltip);
+	position:absolute;
+	right:calc(100% + 10px);
+	top:50%;
+	transform:translate(6px, -50%);
+	opacity:0;
+	pointer-events:none;
+	white-space:nowrap;
+	padding:6px 10px;
+	border-radius:9999px;
+	background:var(--blanc, #FFF);
+	border:1px solid var(--couleur-rouge);
+	color:var(--couleur-rouge);
+	font-family:var(--font-text);
+	font-size:15px;
+	line-height:1;
+	box-shadow:0 10px 20px rgba(0,0,0,0.10);
+	transition:opacity 200ms ease-in, transform 200ms ease-in;
+}
+
+.fullscreen-btn:hover::after,
+.fullscreen-btn:focus-visible::after{
+	opacity:1;
+	transform:translate(0, -50%);
+}
+
+.fullscreen-btn:hover,
+.fullscreen-btn:focus-visible{
+	background:var(--couleur-rouge);
+	color:var(--couleur-blanc);
+	box-shadow:0 20px 40px rgba(0,0,0,0.16);
+	transform:translateY(-1px);
+}
+
+.fullscreen-btn:focus-visible{
+	outline:2px solid color-mix(in srgb, var(--couleur-blanc) 88%, transparent);
+	outline-offset:3px;
+}
+
+.fullscreen-btn__icon{
+	width:20px;
+	height:20px;
+  	color:inherit;
+	background-color:currentColor;
+	-webkit-mask: url('images/plein_ecran.svg') no-repeat center / contain;
+	mask: url('images/plein_ecran.svg') no-repeat center / contain;
+}
+
+@supports not ((-webkit-mask: url('images/plein_ecran.svg') no-repeat center / contain) or (mask: url('images/plein_ecran.svg') no-repeat center / contain)) {
+	.fullscreen-btn__icon{
+		background:none;
+		display:inline-flex;
+		align-items:center;
+		justify-content:center;
+	}
+	.fullscreen-btn__icon::before{
+		content:'\26F6';
+		font-size:20px;
+		line-height:1;
+		color:currentColor;
+	}
+}
+
 /* reveal texture overlays */
 .hotspot--porte:hover ~ .overlay--porte,
 .hotspot--porte:focus-visible ~ .overlay--porte,

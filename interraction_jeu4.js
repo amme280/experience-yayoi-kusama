@@ -51,6 +51,22 @@ function showTransition(){
   transitionLayer.setAttribute('aria-hidden', 'false');
 }
 
+async function requestExperienceFullscreen() {
+  if (document.fullscreenElement) return;
+
+  const target = document.documentElement;
+  const request =
+    target.requestFullscreen ||
+    target.webkitRequestFullscreen ||
+    target.msRequestFullscreen;
+
+  if (typeof request !== 'function') return;
+
+  try {
+    await request.call(target);
+  } catch (_) {}
+}
+
 function hideTransition(){
   if(!transitionLayer || !transitionVideo) return;
   transitionVideo.pause();
@@ -367,6 +383,7 @@ if (webcamAllow) {
     closeModal();
 
     try {
+      await requestExperienceFullscreen();
       await playTransitionToEnd();
 
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });

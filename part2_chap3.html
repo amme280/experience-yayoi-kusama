@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Yayoi Kusama – Au coeur des obsessions</title>  <link rel="icon" href="images/favicon.png" type="image/png">  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Afacad:wght@400&display=swap" rel="stylesheet">
+  <title>Yayoi Kusama – Au coeur des obsessions</title> 
+  <link rel="icon" href="images/favicon.png" type="image/png">  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Afacad:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="part2_chap3.css" />
 </head>
 <body>
@@ -115,6 +116,10 @@
     </div>
   </div>
 
+  <button class="fullscreen-btn" id="fullscreen-btn" type="button" aria-label="Activer le plein écran" title="Plein écran" data-tooltip="Plein écran">
+    <span class="fullscreen-btn__icon" aria-hidden="true"></span>
+  </button>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const openers = Array.from(document.querySelectorAll('[data-modal-target]'));
@@ -165,3 +170,34 @@
   <script src="chap3-audio.js"></script>
 </body>
 </html>
+
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+            function setFullscreenLabel() {
+                if (!fullscreenBtn) return;
+                const isFullscreen = Boolean(document.fullscreenElement);
+                fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Quitter le plein écran' : 'Activer le plein écran');
+                fullscreenBtn.setAttribute('title', isFullscreen ? 'Quitter le plein écran' : 'Plein écran');
+                fullscreenBtn.setAttribute('data-tooltip', isFullscreen ? 'Quitter' : 'Plein écran');
+                fullscreenBtn.classList.toggle('is-fullscreen', isFullscreen);
+            }
+
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', async () => {
+                    try {
+                        if (!document.fullscreenElement) {
+                            await document.documentElement.requestFullscreen();
+                        } else {
+                            await document.exitFullscreen();
+                        }
+                    } catch (_) {}
+                    setFullscreenLabel();
+                });
+
+                document.addEventListener('fullscreenchange', setFullscreenLabel);
+                setFullscreenLabel();
+            }
+        });
+    </script>

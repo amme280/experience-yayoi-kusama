@@ -102,9 +102,27 @@
       } catch(_) {}
     }
 
-    function startExperience(){
+    async function requestExperienceFullscreen(){
+      if(document.fullscreenElement) return;
+
+      const target = immersiveRoot || document.documentElement;
+      const request =
+        target.requestFullscreen ||
+        target.webkitRequestFullscreen ||
+        target.msRequestFullscreen;
+
+      if(typeof request !== 'function') return;
+
+      try {
+        await request.call(target);
+      } catch(_) {}
+    }
+
+    async function startExperience(){
       if(didStart) return;
       didStart = true;
+
+      await requestExperienceFullscreen();
       hideModal();
       startBackgroundMusic();
       bindArrow();

@@ -114,6 +114,40 @@
 
   <div class="page-fade" aria-hidden="true"></div>
 
+  <button class="fullscreen-btn" id="fullscreen-btn" type="button" aria-label="Activer le plein écran" title="Plein écran" data-tooltip="Plein écran">
+    <span class="fullscreen-btn__icon" aria-hidden="true"></span>
+  </button>
+
   <script type="module" src="interraction_jeu4.js"></script>
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+            function setFullscreenLabel() {
+                if (!fullscreenBtn) return;
+                const isFullscreen = Boolean(document.fullscreenElement);
+                fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Quitter le plein écran' : 'Activer le plein écran');
+                fullscreenBtn.setAttribute('title', isFullscreen ? 'Quitter le plein écran' : 'Plein écran');
+                fullscreenBtn.setAttribute('data-tooltip', isFullscreen ? 'Quitter' : 'Plein écran');
+                fullscreenBtn.classList.toggle('is-fullscreen', isFullscreen);
+            }
+
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', async () => {
+                    try {
+                        if (!document.fullscreenElement) {
+                            await document.documentElement.requestFullscreen();
+                        } else {
+                            await document.exitFullscreen();
+                        }
+                    } catch (_) {}
+                    setFullscreenLabel();
+                });
+
+                document.addEventListener('fullscreenchange', setFullscreenLabel);
+                setFullscreenLabel();
+            }
+        });
+    </script>
 </body>
 </html>

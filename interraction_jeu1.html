@@ -25,22 +25,30 @@
     </div>
   </main>
 
-  <div class="info-modal" id="modal-portrait" aria-hidden="true">
+  <button class="fullscreen-btn" id="fullscreen-btn" type="button" aria-label="Activer le plein écran" title="Plein écran" data-tooltip="Plein écran">
+    <span class="fullscreen-btn__icon" aria-hidden="true"></span>
+  </button>
+
+  <div class="info-modal" id="modal-table" aria-hidden="true">
     <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Informations">
       <button class="info-modal__close" type="button" data-modal-close aria-label="Fermer"></button>
       <h2 class="info-modal__title">Une première vision troublante :</h2>
       <p class="info-modal__text">
-        Yayoi Kusama entretient depuis l'enfance une relation difficile avec sa famille, et plus particulièrement avec sa mère. Issue d'un milieu traditionnel japonais, sa mère n'a jamais accepté son attirance pour l'art, ni son désir d'indépendance et lui promet une vie d'épouse au foyer. Enfant, Kusama est contrainte d'espionner son père lors de ses infidélités, une expérience traumatisante qui renforce son isolement et son besoin de s'exprimer autrement. Plus tard, sa mère lui finance le voyage vers New York, mais à la seule condition qu'elle ne revienne jamais. Longtemps, Kusama sera considérée comme une honte pour sa famille, mais cette mise à l'écart deviendra aussi la clé de sa liberté artistique.
+        Yayoi Kusama décrit sa première hallucination avec une précision frappante.
+        <br><br>
+        À l’âge de dix ans, lors d’un repas de famille, elle voit les motifs fleuris de la nappe se détacher et se propager autour d’elle. Les fleurs se multiplient, recouvrent la table, puis ses mains, ses bras, son corps tout entier. Les murs, le plafond, et même le visage de ses proches finissent engloutis par ces formes envahissantes.
+        <br><br>
+        Kusama raconte la peur immense qu’elle a ressentie ce jour-là. Ce moment marque le début de son lien indissociable entre hallucination et création, un thème qu’elle explorera toute sa vie à travers ses pois, ses miroirs et ses œuvres infinies.
       </p>
     </div>
   </div>
 
-  <div class="info-modal info-modal--table" id="modal-table" aria-hidden="true">
+  <div class="info-modal info-modal--portrait" id="modal-portrait" aria-hidden="true">
     <div class="info-modal__dialog" role="dialog" aria-modal="true" aria-label="Informations">
       <button class="info-modal__close" type="button" data-modal-close aria-label="Fermer"></button>
       <h2 class="info-modal__title">Des liens familiaux complexes :</h2>
       <p class="info-modal__text">
-        Yayoi Kusama entretient depuis l’enfance une relation difficile avec sa famille, et plus particulièrement avec sa mère. Issue d’un milieu traditionnel japonais, sa mère n’a jamais accepté son attirance pour l’art, ni son désir d’indépendance et lui promet une vie d’épouse au foyer. Enfant, Kusama est contrainte d’espionner son père lors de ses infidélités, une expérience traumatisante qui renforce son isolement et son besoin de s’exprimer autrement.
+        Yayoi Kusama entretient depuis l’enfance une relation difficile avec sa famille, et plus particulièrement avec sa mère. Issue d’un milieu traditionnel japonais, sa mère n’a jamais accepté son attirance pour l’art, ni son désir d’indépendance, et lui promet une vie d’épouse au foyer. Enfant, Kusama est contrainte d’espionner son père lors de ses infidélités, une expérience traumatisante qui renforce son isolement et son besoin de s’exprimer autrement.
         <br><br>
         Plus tard, sa mère lui finance le voyage vers New York, mais à la seule condition qu’elle ne revienne jamais. Longtemps, Kusama sera considérée comme une honte pour sa famille, mais cette mise à l’écart deviendra aussi la clé de sa liberté artistique.
       </p>
@@ -114,6 +122,32 @@
         hotspot.addEventListener('mouseenter', playHoverSound);
         hotspot.addEventListener('focus', playHoverSound);
       });
+
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      function setFullscreenLabel(){
+        if(!fullscreenBtn) return;
+        const isFullscreen = Boolean(document.fullscreenElement);
+        fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Quitter le plein écran' : 'Activer le plein écran');
+        fullscreenBtn.setAttribute('title', isFullscreen ? 'Quitter le plein écran' : 'Plein écran');
+        fullscreenBtn.setAttribute('data-tooltip', isFullscreen ? 'Quitter' : 'Plein écran');
+        fullscreenBtn.classList.toggle('is-fullscreen', isFullscreen);
+      }
+
+      if(fullscreenBtn){
+        fullscreenBtn.addEventListener('click', async () => {
+          try {
+            if(!document.fullscreenElement){
+              await document.documentElement.requestFullscreen();
+            } else {
+              await document.exitFullscreen();
+            }
+          } catch (_) {}
+          setFullscreenLabel();
+        });
+
+        document.addEventListener('fullscreenchange', setFullscreenLabel);
+        setFullscreenLabel();
+      }
 
       // Pop-ups (portrait + table)
       function bindModal(hotspotId, modalId){
