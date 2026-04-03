@@ -8,8 +8,6 @@ const webcamModal = document.getElementById('webcamModal');
 const webcamAllow = document.getElementById('webcamAllow');
 const webcamDeny = document.getElementById('webcamDeny');
 const webcamClose = document.getElementById('webcamClose');
-const transitionLayer = document.getElementById('transitionLayer');
-const transitionVideo = document.getElementById('transitionVideo');
 const webcamLayer = document.getElementById('webcamLayer');
 const webcamVideo = document.getElementById('webcamVideo');
 const webcamFilter = document.getElementById('webcamFilter');
@@ -42,40 +40,6 @@ function closeModal(){
   if(!webcamModal) return;
   webcamModal.classList.remove('is-open');
   webcamModal.setAttribute('aria-hidden', 'true');
-}
-
-function showTransition() {
-  if (!transitionLayer || !transitionVideo) return;
-  transitionLayer.classList.add('is-active');
-  transitionLayer.classList.remove('is-fading-out');
-  transitionLayer.setAttribute('aria-hidden', 'false');
-}
-
-function hideTransition() {
-  if (!transitionLayer || !transitionVideo) return;
-  transitionVideo.pause();
-  transitionVideo.currentTime = 0;
-  transitionLayer.classList.remove('is-active');
-  transitionLayer.classList.remove('is-fading-out');
-  transitionLayer.setAttribute('aria-hidden', 'true');
-}
-
-function fadeOutTransition() {
-  if (!transitionLayer || !transitionVideo) return;
-  transitionLayer.classList.add('is-fading-out');
-  setTimeout(() => {
-    hideTransition();
-  }, 320);
-}
-
-async function startWebcamFlow() {
-  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-  if (webcamVideo) {
-    webcamVideo.srcObject = stream;
-    await webcamVideo.play();
-  }
-  setActiveFilter(1);
-  showWebcamLayer();
 }
 
 function showWebcamLayer(){
@@ -232,6 +196,9 @@ controls.enableDamping = true;
 controls.enablePan = false;
 controls.enableZoom = false;
 
+let isRenderPaused = false;
+let rafId = 0;
+
 let model = null;
 
 function fitCameraToObject(object) {
@@ -283,9 +250,25 @@ function onResize() {
 window.addEventListener('resize', onResize);
 
 function animate() {
-  requestAnimationFrame(animate);
+  if (isRenderPaused) return;
   controls.update();
   renderer.render(scene, camera);
+  rafId = requestAnimationFrame(animate);
+}
+
+function pause3DRender() {
+  if (isRenderPaused) return;
+  isRenderPaused = true;
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+  }
+}
+
+function resume3DRender() {
+  if (!isRenderPaused) return;
+  isRenderPaused = false;
+  animate();
 }
 
 animate();
@@ -318,59 +301,20 @@ if (webcamModal) {
 
 if (webcamAllow) {
   webcamAllow.addEventListener('click', async () => {
-    closeModal();
-
-    if (!transitionVideo || !transitionLayer) {
-      try {
-        await startWebcamFlow();
-      } catch (err) {
-        console.error('Webcam error', err);
-      }
-      return;
-    }
-
-    const onEnded = async () => {
-      transitionVideo.removeEventListener('ended', onEnded);
-      transitionVideo.removeEventListener('error', onError);
-      try {
-        // Garder la transition visible pendant le démarrage de la webcam
-        await startWebcamFlow();
-        fadeOutTransition();
-      } catch (err) {
-        console.error('Webcam error', err);
-        fadeOutTransition();
-      }
-    };
-
-    const onError = async () => {
-      transitionVideo.removeEventListener('ended', onEnded);
-      transitionVideo.removeEventListener('error', onError);
-      try {
-        await startWebcamFlow();
-        fadeOutTransition();
-      } catch (err) {
-        console.error('Webcam error', err);
-        fadeOutTransition();
-      }
-    };
-
-    transitionVideo.addEventListener('ended', onEnded);
-    transitionVideo.addEventListener('error', onError, { once: true });
-
+    pause3DRender();
     try {
-      showTransition();
-      transitionVideo.currentTime = 0;
-      await transitionVideo.play();
-    } catch (err) {
-      console.warn('Transition video play failed, starting webcam directly', err);
-      transitionVideo.removeEventListener('ended', onEnded);
-      transitionVideo.removeEventListener('error', onError);
-      hideTransition();
-      try {
-        await startWebcamFlow();
-      } catch (webcamErr) {
-        console.error('Webcam error', webcamErr);
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      if (webcamVideo) {
+        webcamVideo.srcObject = stream;
+        await webcamVideo.play();
       }
+      closeModal();
+      setActiveFilter(1);
+      showWebcamLayer();
+    } catch (err) {
+      console.error('Webcam error', err);
+      closeModal();
+      resume3DRender();
     }
   });
 }
@@ -428,6 +372,7 @@ if (webcamNextBtn) {
 if (webcamBackBtn) {
   webcamBackBtn.addEventListener('click', () => {
     hideWebcamLayer();
+    resume3DRender();
   });
 }
 

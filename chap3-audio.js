@@ -6,7 +6,7 @@
   const audio = new Audio(AUDIO_SRC);
   audio.loop = true;
   audio.preload = 'auto';
-  const targetVolume = 0.6;
+  const targetVolume = 0.05;
   audio.volume = 0;
 
   const savedTime = parseFloat(localStorage.getItem(STORAGE_TIME));
