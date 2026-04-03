@@ -170,7 +170,7 @@ function exitPhotoPreview() {
 function setActiveFilter(filterNumber) {
   if (!webcamFilter || !webcamLayer) return;
   activeFilter = filterNumber === 2 ? 2 : 1;
-  const nextSrc = activeFilter === 2 ? 'images/filtre 2.png' : 'images/filtre 1.png';
+  const nextSrc = activeFilter === 2 ? 'images/filtre-3.png' : 'images/filtre 1.png';
   webcamFilter.classList.add('is-fading');
   setTimeout(() => {
     webcamFilter.src = nextSrc;
