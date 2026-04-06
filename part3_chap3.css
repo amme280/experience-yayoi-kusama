@@ -303,14 +303,23 @@ body.is-modal-open{overflow:hidden}
 .modal{
   position:fixed;
   inset:0;
-  display:none;
+  display:flex;
   align-items:center;
   justify-content:center;
   background:rgba(30,30,30,0.35);
   z-index:9999;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 350ms ease, visibility 0s linear 350ms;
 }
 
-.modal.is-open{display:flex}
+.modal.is-open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transition:opacity 350ms ease;
+}
 
 .modal__dialog{
   width:607px;
@@ -321,6 +330,14 @@ body.is-modal-open{overflow:hidden}
   justify-content:center;
   align-items:center;
   position:relative;
+  opacity:0;
+  transform:translateY(8px) scale(0.985);
+  transition:opacity 350ms ease, transform 350ms ease;
+}
+
+.modal.is-open .modal__dialog{
+  opacity:1;
+  transform:translateY(0) scale(1);
 }
 
 .modal__content{

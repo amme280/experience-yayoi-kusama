@@ -200,12 +200,13 @@ body.is-modal-open{overflow:hidden}
 	opacity:0;
 	visibility:hidden;
 	pointer-events:none;
-	transition:opacity 300ms ease-out;
+	transition:opacity 350ms ease, visibility 0s linear 350ms;
 }
 .info-modal.is-open{
 	opacity:1;
 	visibility:visible;
 	pointer-events:auto;
+	transition:opacity 350ms ease;
 }
 
 .info-modal__dialog{
@@ -218,7 +219,8 @@ body.is-modal-open{overflow:hidden}
 	align-items:center;
 	padding:100px 100px;
 	opacity:0;
-	transition:opacity 300ms ease-out;
+	transform:translateY(8px) scale(0.985);
+	transition:opacity 350ms ease, transform 350ms ease;
 	position:relative;
 }
 
@@ -235,7 +237,10 @@ body.is-modal-open{overflow:hidden}
 	text-align:center;
 }
 
-.info-modal.is-open .info-modal__dialog{opacity:1}
+.info-modal.is-open .info-modal__dialog{
+	opacity:1;
+	transform:translateY(0) scale(1);
+}
 
 /* Table modal: adapt height to content */
 .info-modal--table .info-modal__dialog{
