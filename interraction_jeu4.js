@@ -421,8 +421,12 @@ if (takePhotoBtn) {
     
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    ctx.filter = 'saturate(2)';
     
     drawCover(ctx, webcamVideo, outputWidth, outputHeight);
+
+    ctx.filter = 'none';
     
     if (webcamFilter && webcamFilter.complete) {
       drawCover(ctx, webcamFilter, outputWidth, outputHeight);

@@ -118,9 +118,20 @@
         document.getElementById('hotspot-table')
       ].filter(Boolean);
 
+      let lastPointerInteractionAt = 0;
+      document.addEventListener('pointerdown', () => {
+        lastPointerInteractionAt = Date.now();
+      }, true);
+
+      function playHoverSoundOnFocus(){
+        // Ignore focus events caused by mouse click to avoid duplicate sound.
+        if(Date.now() - lastPointerInteractionAt < 250) return;
+        playHoverSound();
+      }
+
       hoverHotspots.forEach((hotspot) => {
         hotspot.addEventListener('mouseenter', playHoverSound);
-        hotspot.addEventListener('focus', playHoverSound);
+        hotspot.addEventListener('focus', playHoverSoundOnFocus);
       });
 
       const fullscreenBtn = document.getElementById('fullscreen-btn');
